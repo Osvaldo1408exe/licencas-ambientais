@@ -2,4 +2,4 @@
 ## Tecnologias
 - **Java**
 -  **Spring boot**
--  **Postgres**:
+-  **Postgres**
