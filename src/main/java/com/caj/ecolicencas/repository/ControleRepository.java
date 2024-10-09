@@ -29,7 +29,6 @@ public class ControleRepository {
         }catch (SQLException e){
             e.printStackTrace();
         }
-
         return controles;
     }
 }

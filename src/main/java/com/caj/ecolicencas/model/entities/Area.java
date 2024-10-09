@@ -6,12 +6,12 @@ public class Area {
     private String ativo;
 
     public Area(int id, String descricao, String ativo) {
-        Id = id;
+        this.Id = id;
         this.descricao = descricao;
         this.ativo = ativo;
     }
 
-    public int getId(int id) {
+    public int getId() {
         return Id;
     }
 
