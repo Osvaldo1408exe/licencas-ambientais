@@ -1,8 +1,7 @@
 package com.caj.ecolicencas.service;
 
-import com.caj.ecolicencas.model.entities.Previsao;
+
 import com.caj.ecolicencas.model.entities.ProcessoSei;
-import com.caj.ecolicencas.repository.PrevisaoRepository;
 import com.caj.ecolicencas.repository.ProcessoSeiRepository;
 import org.springframework.stereotype.Service;
 

@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SetorResponsavlService {
+public class SetorResponsavelService {
     private final SetorResponsavelRepository setorResponsavelRepository;
 
-    public SetorResponsavlService(SetorResponsavelRepository setorResponsavelRepository) {
+    public SetorResponsavelService(SetorResponsavelRepository setorResponsavelRepository) {
         this.setorResponsavelRepository = setorResponsavelRepository;
     }
 
