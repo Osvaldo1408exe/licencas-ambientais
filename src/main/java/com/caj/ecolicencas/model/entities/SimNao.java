@@ -3,9 +3,9 @@ package com.caj.ecolicencas.model.entities;
 public class SimNao {
     private int Id;
     private String descricao;
-    private char ativo;
+    private String ativo;
 
-    public SimNao(int id, String descricao, char ativo) {
+    public SimNao(int id, String descricao, String ativo) {
         Id = id;
         this.descricao = descricao;
         this.ativo = ativo;
@@ -27,11 +27,11 @@ public class SimNao {
         this.descricao = descricao;
     }
 
-    public char getAtivo() {
+    public String getAtivo() {
         return ativo;
     }
 
-    public void setAtivo(char ativo) {
+    public void setAtivo(String ativo) {
         this.ativo = ativo;
     }
 
