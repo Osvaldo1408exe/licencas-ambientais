@@ -52,7 +52,7 @@ CREATE TABLE "licencas"(
     "id_area" INTEGER NOT NULL,
     "id_unidade" INTEGER NOT NULL,
     "id_subunidade" INTEGER NOT NULL,
-    "data_requerimenintto" DATE NOT NULL,
+    "data_requerimento" DATE NOT NULL,
     "id_controle" INTEGER NOT NULL,
     "id_orgao" INTEGER NOT NULL,
     "id_tipo" INTEGER NOT NULL,
