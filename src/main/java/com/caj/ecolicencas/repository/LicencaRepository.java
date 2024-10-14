@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 @Repository
 public class LicencaRepository {
-    private String sql = "SELECT  licencas.id_licenca, area.descricao as area, unidade.descricao as unidade, sub_unidade.descricao as subUnidade, licencas.data_requerimento, \n" +
+    private final String sql = "SELECT  licencas.id_licenca, area.descricao as area, unidade.descricao as unidade, sub_unidade.descricao as subUnidade, licencas.data_requerimento, \n" +
             "\t\tcontrole.descricao as controle, orgao_emissor.descricao as orgao_emissor, tipo.descricao as tipo, especificacao.descricao as especificacao, \n" +
             "\t\tnumero_licenca, fcei_sinfat, num_processo_sinfat, sgpe,  processo_sei.descricao as processo_sei, data_emissao, data_vencimento, previsao.descricao as previsao,\n" +
             "\t\tsim_nao.descricao as requerimento, data_protocolo_orgao, sim_nao.descricao as emitida_nova_licenca, situacao_processo.descricao as situacao_processo,\n" +
@@ -33,7 +33,7 @@ public class LicencaRepository {
             "join sim_nao sim_nao3 ON sim_nao3.id_sim_nao = licencas.id_requerimento \n" +
             "join situacao_processo ON situacao_processo.id_situacao_processo = licencas.id_situacao_processo\n" +
             "join setor_responsavel ON setor_responsavel.id_setor_responsavel = licencas.id_setor_responsavel\n" +
-            "join situacao_licenca ON situacao_licenca.id_situacao_licenca = licencas.id_situacao_licenca\n";
+            "join situacao_licenca ON situacao_licenca.id_situacao_licenca = licencas.id_situacao_licenca\n WHERE licencas.ativo = 's'" ;
 
     public List<Licenca> findAll(){
         List<Licenca> licencas = new ArrayList<>();

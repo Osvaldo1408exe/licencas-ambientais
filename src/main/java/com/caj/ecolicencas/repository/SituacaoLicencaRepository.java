@@ -1,7 +1,6 @@
 package com.caj.ecolicencas.repository;
 
 import com.caj.ecolicencas.config.ConnectionFactory;
-import com.caj.ecolicencas.model.entities.SimNao;
 import com.caj.ecolicencas.model.entities.SituacaoLicenca;
 import org.springframework.stereotype.Repository;
 
@@ -26,6 +25,10 @@ public class SituacaoLicencaRepository {
                 SituacaoLicenca situacao_licenca = new SituacaoLicenca(rs.getInt("id_situacao_licenca"), rs.getString("descricao"),rs.getString("ativo"));
                 situacaoLicencas.add(situacao_licenca);
             }
+            conn.close();
+            stmt.close();
+            rs.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
