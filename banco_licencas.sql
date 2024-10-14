@@ -1,54 +1,54 @@
 CREATE TABLE "especificacao"(
-    "id_especificacao" INTEGER NOT NULL,
+    "id_especificacao" SERIAL,
     "descricao" VARCHAR(10) NOT NULL,
     "ativo" CHAR(1) NOT NULL DEFAULT 's'
 );
 ALTER TABLE
     "especificacao" ADD PRIMARY KEY("id_especificacao");
 CREATE TABLE "setor_responsavel"(
-    "id_setor_responsavel" INTEGER NOT NULL,
+    "id_setor_responsavel" SERIAL,
     "descricao" VARCHAR(50) NOT NULL,
     "ativo" CHAR(1) NOT NULL DEFAULT 's'
 );
 ALTER TABLE
     "setor_responsavel" ADD PRIMARY KEY("id_setor_responsavel");
 CREATE TABLE "situacao_processo"(
-    "id_situacao_processo" INTEGER NOT NULL,
+    "id_situacao_processo" SERIAL,
     "descricao" VARCHAR(12) NOT NULL,
     "ativo" CHAR(1) NOT NULL DEFAULT 's'
 );
 ALTER TABLE
     "situacao_processo" ADD PRIMARY KEY("id_situacao_processo");
 CREATE TABLE "area"(
-    "id_area" INTEGER NOT NULL,
+    "id_area" SERIAL,
     "descricao" VARCHAR(50) NOT NULL,
     "ativo" CHAR(1) NOT NULL DEFAULT 's'
 );
 ALTER TABLE
     "area" ADD PRIMARY KEY("id_area");
 CREATE TABLE "previsao"(
-    "id_previsao" INTEGER NOT NULL,
+    "id_previsao" SERIAL,
     "descricao" VARCHAR(13) NOT NULL,
     "ativo" CHAR(1) NOT NULL DEFAULT 's'
 );
 ALTER TABLE
     "previsao" ADD PRIMARY KEY("id_previsao");
 CREATE TABLE "sub_unidade"(
-    "id_subunidade" INTEGER NOT NULL,
+    "id_subunidade" SERIAL,
     "descricao" VARCHAR(100) NOT NULL,
     "ativo" CHAR(1) NOT NULL DEFAULT 's'
 );
 ALTER TABLE
     "sub_unidade" ADD PRIMARY KEY("id_subunidade");
 CREATE TABLE "unidade"(
-    "id_unidade" INTEGER NOT NULL,
+    "id_unidade" SERIAL,
     "descricao" VARCHAR(100) NOT NULL,
     "ativo" CHAR(1) NOT NULL DEFAULT 's'
 );
 ALTER TABLE
     "unidade" ADD PRIMARY KEY("id_unidade");
 CREATE TABLE "licencas"(
-    "id_licenca" INTEGER NOT NULL,
+    "id_licenca" SERIAL,
     "id_area" INTEGER NOT NULL,
     "id_unidade" INTEGER NOT NULL,
     "id_subunidade" INTEGER NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE "licencas"(
     "fcei_sinfat" INTEGER NOT NULL,
     "num_processo_sinfat" VARCHAR(50) NOT NULL,
     "sgpe" VARCHAR(100) NOT NULL,
-    "id_num_processo_sei" INTEGER NOT NULL,
+    "processo_sei" varchar(100),
     "data_emissao" DATE NOT NULL,
     "data_vencimento" DATE NOT NULL,
     "id_previsao" INTEGER NOT NULL,
@@ -82,47 +82,40 @@ CREATE TABLE "licencas"(
 ALTER TABLE
     "licencas" ADD PRIMARY KEY("id_licenca");
 CREATE TABLE "situacao_licenca"(
-    "id_situacao_licenca" INTEGER NOT NULL,
-    "descricao" VARCHAR(12) NOT NULL,
+    "id_situacao_licenca" SERIAL,
+    "descricao" VARCHAR(50) NOT NULL,
     "ativo" CHAR(1) NOT NULL DEFAULT 's'
 );
 ALTER TABLE
     "situacao_licenca" ADD PRIMARY KEY("id_situacao_licenca");
 CREATE TABLE "orgao_emissor"(
-    "id_orgao_emissor" INTEGER NOT NULL,
+    "id_orgao_emissor" SERIAL,
     "descricao" VARCHAR(20) NOT NULL,
     "ativo" CHAR(1) NOT NULL DEFAULT 's'
 );
 ALTER TABLE
     "orgao_emissor" ADD PRIMARY KEY("id_orgao_emissor");
 CREATE TABLE "controle"(
-    "id_controle" INTEGER NOT NULL,
+    "id_controle" SERIAL,
     "descricao" VARCHAR(20) NOT NULL,
     "ativo" CHAR(1) NOT NULL DEFAULT 's'
 );
 ALTER TABLE
     "controle" ADD PRIMARY KEY("id_controle");
 CREATE TABLE "sim_nao"(
-    "id_sim_nao" INTEGER NOT NULL,
+    "id_sim_nao" SERIAL,
     "descricao" VARCHAR(4) NOT NULL,
     "ativo" CHAR(1) NOT NULL DEFAULT 's'
 );
 ALTER TABLE
     "sim_nao" ADD PRIMARY KEY("id_sim_nao");
 CREATE TABLE "tipo"(
-    "id_tipo" INTEGER NOT NULL,
+    "id_tipo" SERIAL,
     "descricao" VARCHAR(50) NOT NULL,
     "ativo" CHAR(1) NOT NULL DEFAULT 's'
 );
 ALTER TABLE
     "tipo" ADD PRIMARY KEY("id_tipo");
-CREATE TABLE "processo_sei"(
-    "id_processo_sei" INTEGER NOT NULL,
-    "descricao" VARCHAR(13) NOT NULL,
-    "ativo" CHAR(1) NOT NULL DEFAULT 's'
-);
-ALTER TABLE
-    "processo_sei" ADD PRIMARY KEY("id_processo_sei");
 ALTER TABLE
     "licencas" ADD CONSTRAINT "licencas_id_emitida_nova_licenca_foreign" FOREIGN KEY("id_emitida_nova_licenca") REFERENCES "sim_nao"("id_sim_nao");
 ALTER TABLE
@@ -147,8 +140,6 @@ ALTER TABLE
     "licencas" ADD CONSTRAINT "licencas_id_especificacao_foreign" FOREIGN KEY("id_especificacao") REFERENCES "especificacao"("id_especificacao");
 ALTER TABLE
     "licencas" ADD CONSTRAINT "licencas_id_situacao_processo_foreign" FOREIGN KEY("id_situacao_processo") REFERENCES "situacao_processo"("id_situacao_processo");
-ALTER TABLE
-    "licencas" ADD CONSTRAINT "licencas_id_num_processo_sei_foreign" FOREIGN KEY("id_num_processo_sei") REFERENCES "processo_sei"("id_processo_sei");
 ALTER TABLE
     "licencas" ADD CONSTRAINT "licencas_id_controle_foreign" FOREIGN KEY("id_controle") REFERENCES "controle"("id_controle");
 ALTER TABLE
