@@ -10,7 +10,6 @@ public class CamposResponseDTO {
     private final List<Especificacao> especificacaos;
     private final List<OrgaoEmissor> orgaoEmissors;
     private final List<Previsao> previsoes;
-    private final List<ProcessoSei> processosSei;
     private final List<SetorResponsavel> setores;
     private final List<SimNao> simnaos;
     private final List<SituacaoLicenca> situacoesLicencas;
@@ -19,13 +18,12 @@ public class CamposResponseDTO {
     private final List<Tipo> tipos;
     private final List<Unidade> unidades;
 
-    public CamposResponseDTO(List<Area> areas, List<Controle> controles, List<Especificacao> especificacaos, List<OrgaoEmissor> orgaoEmissors, List<Previsao> previsoes, List<ProcessoSei> processosSei, List<SetorResponsavel> setores, List<SimNao> simnaos, List<SituacaoLicenca> situacoesLicencas, List<SituacaoProcesso> situcoesProcessos, List<SubUnidade> subUnidades, List<Tipo> tipos, List<Unidade> unidades) {
+    public CamposResponseDTO(List<Area> areas, List<Controle> controles, List<Especificacao> especificacaos, List<OrgaoEmissor> orgaoEmissors, List<Previsao> previsoes, List<SetorResponsavel> setores, List<SimNao> simnaos, List<SituacaoLicenca> situacoesLicencas, List<SituacaoProcesso> situcoesProcessos, List<SubUnidade> subUnidades, List<Tipo> tipos, List<Unidade> unidades) {
         this.areas = areas;
         this.controles = controles;
         this.especificacaos = especificacaos;
         this.orgaoEmissors = orgaoEmissors;
         this.previsoes = previsoes;
-        this.processosSei = processosSei;
         this.setores = setores;
         this.simnaos = simnaos;
         this.situacoesLicencas = situacoesLicencas;
@@ -53,10 +51,6 @@ public class CamposResponseDTO {
 
     public List<Previsao> getPrevisoes(){
         return previsoes;
-    }
-
-    public List<ProcessoSei> getProcessosSei() {
-        return processosSei;
     }
 
     public List<SetorResponsavel> getSetores() {

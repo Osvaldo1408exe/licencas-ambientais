@@ -19,7 +19,6 @@ public class CamposController {
     private final EspecificacaoService especificacaoService;
     private final OrgaoEmissorService orgaoEmissorService;
     private final PrevisaoService previsaoService;
-    private final ProcessoSeiService processoSeiService;
     private final SetorResponsavelService setorResponsavelService;
     private final SimNaoService simnaoService;
     private final SituacaoLicencaService situacoesLicencasService;
@@ -29,13 +28,12 @@ public class CamposController {
     private final UnidadeService unidadesService;
 
 
-    public CamposController(AreaService areaService, ControleService controleService, EspecificacaoService especificacaoService, OrgaoEmissorService orgaoEmissorService, PrevisaoService previsaoService, ProcessoSeiService processoSeiService, SetorResponsavelService setorResponsavelService, SimNaoService simnaoService, SituacaoLicencaService situacoesLicencasService, SituacaoProcessoService situcoesProcessosService, SubUnidadeService subUnidadesService, TipoService tiposService, UnidadeService unidadesService) {
+    public CamposController(AreaService areaService, ControleService controleService, EspecificacaoService especificacaoService, OrgaoEmissorService orgaoEmissorService, PrevisaoService previsaoService, SetorResponsavelService setorResponsavelService, SimNaoService simnaoService, SituacaoLicencaService situacoesLicencasService, SituacaoProcessoService situcoesProcessosService, SubUnidadeService subUnidadesService, TipoService tiposService, UnidadeService unidadesService) {
         this.areaService = areaService;
         this.controleService = controleService;
         this.especificacaoService = especificacaoService;
         this.orgaoEmissorService = orgaoEmissorService;
         this.previsaoService = previsaoService;
-        this.processoSeiService = processoSeiService;
         this.setorResponsavelService = setorResponsavelService;
         this.simnaoService = simnaoService;
         this.situacoesLicencasService = situacoesLicencasService;
@@ -53,7 +51,6 @@ public class CamposController {
             List<Especificacao> especificacaos = especificacaoService.findAllActiveEspecificacoes();
             List<OrgaoEmissor> orgaoEmissors = orgaoEmissorService.findAllActiveOrgaosEmissores();
             List<Previsao> previsoes = previsaoService.findAllActivePrevisoes();
-            List<ProcessoSei> processos = processoSeiService.findAllActiveProcessos();
             List<SetorResponsavel> setores = setorResponsavelService.findAllActiveSetores();
             List<SimNao> simnaos = simnaoService.findAllActiveSimNaos();
             List<SituacaoLicenca> situacoesLicencas = situacoesLicencasService.findAllActiveSituacaoLicencas();
@@ -63,7 +60,7 @@ public class CamposController {
             List<Unidade> unidades = unidadesService.findAllActivUnidade();
 
 
-            CamposResponseDTO response = new CamposResponseDTO(areas,controles,especificacaos, orgaoEmissors, previsoes, processos, setores, simnaos, situacoesLicencas, situcoesProcessos, subUnidades, tipos, unidades);
+            CamposResponseDTO response = new CamposResponseDTO(areas,controles,especificacaos, orgaoEmissors, previsoes, setores, simnaos, situacoesLicencas, situcoesProcessos, subUnidades, tipos, unidades);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return (ResponseEntity<CamposResponseDTO>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
