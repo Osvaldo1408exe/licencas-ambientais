@@ -1,3 +1,16 @@
+CREATE TABLE "logs"(
+    "id" SERIAL,
+    "usuario" VARCHAR(50),
+    "data_entrada" TIMESTAMP
+);
+CREATE TABLE "todo"(
+    "id" SERIAL,
+    "texto" VARCHAR(250),
+    "checked" CHAR,
+    "usuario" VARCHAR(50),
+    "id_licenca" INTEGER
+);
+
 CREATE TABLE "especificacao"(
     "id_especificacao" SERIAL,
     "descricao" VARCHAR(10) NOT NULL,
@@ -47,38 +60,40 @@ CREATE TABLE "unidade"(
 );
 ALTER TABLE
     "unidade" ADD PRIMARY KEY("id_unidade");
+
 CREATE TABLE "licencas"(
     "id_licenca" SERIAL,
     "id_area" INTEGER NOT NULL,
     "id_unidade" INTEGER NOT NULL,
     "id_subunidade" INTEGER NOT NULL,
-    "data_requerimento" DATE NOT NULL,
+    "data_requerimento" DATE,
     "id_controle" INTEGER NOT NULL,
     "id_orgao" INTEGER NOT NULL,
     "id_tipo" INTEGER NOT NULL,
     "id_especificacao" INTEGER NOT NULL,
     "numero_licenca" VARCHAR(100) NOT NULL,
-    "fcei_sinfat" INTEGER NOT NULL,
-    "num_processo_sinfat" VARCHAR(50) NOT NULL,
-    "sgpe" VARCHAR(100) NOT NULL,
+    "fcei_sinfat" INTEGER,
+    "num_processo_sinfat" VARCHAR(50),
+    "sgpe" VARCHAR(100),
     "processo_sei" varchar(100),
-    "data_emissao" DATE NOT NULL,
+    "data_emissao" DATE,
     "data_vencimento" DATE NOT NULL,
     "id_previsao" INTEGER NOT NULL,
     "id_requerimento" INTEGER NOT NULL,
-    "data_protocolo_orgao" DATE NOT NULL,
+    "data_protocolo_orgao" DATE,
     "id_emitida_nova_licenca" INTEGER NOT NULL,
     "id_situacao_processo" INTEGER NOT NULL,
     "id_atualizado_sa" INTEGER NOT NULL,
-    "observacoes" VARCHAR(550) NOT NULL,
-    "providenciar_doc" DATE NOT NULL,
-    "data_limite" DATE NOT NULL,
-    "tempo_tramitacao" INTEGER NOT NULL,
+    "observacoes" VARCHAR(550),
+    "providenciar_doc" DATE,
+    "data_limite" DATE,
+    "tempo_tramitacao" INTEGER,
     "id_situacao_licenca" INTEGER NOT NULL,
     "id_setor_responsavel" INTEGER NOT NULL,
-    "dias_para_vencer" INTEGER NOT NULL,
+    "dias_para_vencer" INTEGER,
     "ativo" CHAR(1) NOT NULL DEFAULT 's'
 );
+
 ALTER TABLE
     "licencas" ADD PRIMARY KEY("id_licenca");
 CREATE TABLE "situacao_licenca"(
