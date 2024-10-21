@@ -2,19 +2,19 @@ package com.caj.ecolicencas.service;
 
 
 import com.caj.ecolicencas.model.entities.ProcessoSei;
-import com.caj.ecolicencas.repository.ProcessoSeiRepository;
+import com.caj.ecolicencas.dao.ProcessoSeiDAO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public class ProcessoSeiService {
-    private final ProcessoSeiRepository processoSeiRepository;
+    private final ProcessoSeiDAO processoSeiDAO;
 
-    public ProcessoSeiService(ProcessoSeiRepository processoSeiRepository){
-        this.processoSeiRepository = processoSeiRepository;
+    public ProcessoSeiService(ProcessoSeiDAO processoSeiDAO){
+        this.processoSeiDAO = processoSeiDAO;
     }
 
     public List<ProcessoSei> findAllActiveProcessos(){
-        return processoSeiRepository.findAll();
+        return processoSeiDAO.findAll();
     }
 }

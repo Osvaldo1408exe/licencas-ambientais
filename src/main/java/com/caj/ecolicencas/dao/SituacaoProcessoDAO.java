@@ -1,7 +1,7 @@
-package com.caj.ecolicencas.repository;
+package com.caj.ecolicencas.dao;
 
 import com.caj.ecolicencas.config.ConnectionFactory;
-import com.caj.ecolicencas.model.entities.Especificacao;
+import com.caj.ecolicencas.model.entities.SituacaoProcesso;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -10,25 +10,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 @Repository
-public class EspecificacaoRepository {
+public class SituacaoProcessoDAO {
+    String sql = "SELECT * FROM situacao_processo WHERE ativo = 's'";
 
-    String sql = "SELECT * FROM especificacao WHERE ativo = 's'";
-
-    public List<Especificacao> findAll(){
-        List<Especificacao> especificacaos = new ArrayList<>();
+    public List<SituacaoProcesso> findAll(){
+        List<SituacaoProcesso> situacaoProcessos = new ArrayList<>();
         try {
             Connection conn = ConnectionFactory.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
+
             while (rs.next()){
-                Especificacao especificacao = new Especificacao(rs.getInt("id_especificacao"),rs.getString("descricao"),rs.getString("ativo"));
-                especificacaos.add(especificacao);
+                SituacaoProcesso situacao_processo = new SituacaoProcesso(rs.getInt("id_situacao_processo"), rs.getString("descricao"),rs.getString("ativo"));
+                situacaoProcessos.add(situacao_processo);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return especificacaos;
+        return situacaoProcessos;
     }
 }

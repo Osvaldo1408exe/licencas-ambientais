@@ -1,7 +1,7 @@
-package com.caj.ecolicencas.repository;
+package com.caj.ecolicencas.dao;
 
 import com.caj.ecolicencas.config.ConnectionFactory;
-import com.caj.ecolicencas.model.entities.OrgaoEmissor;
+import com.caj.ecolicencas.model.entities.Area;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -12,22 +12,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class OrgaoEmissorRepository {
-    String sql = "SELECT * FROM orgao_emissor WHERE ativo = 's'";
+public class AreaDAO {
+    String sql = "SELECT * FROM area WHERE ativo = 's' ";
 
-    public List<OrgaoEmissor> fingAll(){
-        List<OrgaoEmissor> orgaoEmissors = new ArrayList<>();
-        try {
+    public List<Area> findAll(){
+        List<Area> areas = new ArrayList<>();
+        try{
             Connection conn = ConnectionFactory.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
+
             while (rs.next()){
-                OrgaoEmissor orgaoEmissor = new OrgaoEmissor(rs.getInt("id_orgao_emissor"),rs.getString("descricao"),rs.getString("ativo"));
-                orgaoEmissors.add(orgaoEmissor);
+                Area area = new Area( rs.getInt("id_area"),rs.getString("descricao"), rs.getString("ativo"));
+                areas.add(area);
             }
+
         } catch (SQLException e) {
            e.printStackTrace();
         }
-        return orgaoEmissors;
+        return areas;
     }
 }

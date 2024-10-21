@@ -1,19 +1,19 @@
 package com.caj.ecolicencas.service;
 
 import com.caj.ecolicencas.model.entities.Tipo;
-import com.caj.ecolicencas.repository.TipoRepository;
+import com.caj.ecolicencas.dao.TipoDAO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public class TipoService {
-    private final TipoRepository tipoRepository;
+    private final TipoDAO tipoDAO;
 
-    public TipoService(TipoRepository tipoRepository) {
-        this.tipoRepository = tipoRepository;
+    public TipoService(TipoDAO tipoDAO) {
+        this.tipoDAO = tipoDAO;
     }
 
     public List<Tipo> findAllActiveTipo() {
-        return tipoRepository.findAll();
+        return tipoDAO.findAll();
     }
 }

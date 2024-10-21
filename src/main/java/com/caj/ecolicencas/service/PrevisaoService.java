@@ -1,20 +1,20 @@
 package com.caj.ecolicencas.service;
 
 import com.caj.ecolicencas.model.entities.Previsao;
-import com.caj.ecolicencas.repository.PrevisaoRepository;
+import com.caj.ecolicencas.dao.PrevisaoDAO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class PrevisaoService {
-    private final PrevisaoRepository previsaoRepository;
+    private final PrevisaoDAO previsaoDAO;
 
-    public PrevisaoService(PrevisaoRepository previsaoRepository){
-        this.previsaoRepository = previsaoRepository;
+    public PrevisaoService(PrevisaoDAO previsaoDAO){
+        this.previsaoDAO = previsaoDAO;
     }
 
     public List<Previsao> findAllActivePrevisoes(){
-        return previsaoRepository.findAll();
+        return previsaoDAO.findAll();
     }
 }

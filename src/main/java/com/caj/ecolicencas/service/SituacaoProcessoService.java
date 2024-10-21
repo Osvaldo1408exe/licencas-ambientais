@@ -1,20 +1,20 @@
 package com.caj.ecolicencas.service;
 
 import com.caj.ecolicencas.model.entities.SituacaoProcesso;
-import com.caj.ecolicencas.repository.SituacaoProcessoRepository;
+import com.caj.ecolicencas.dao.SituacaoProcessoDAO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class SituacaoProcessoService {
-    private final SituacaoProcessoRepository situacaoProcessoRepository;
+    private final SituacaoProcessoDAO situacaoProcessoDAO;
 
-    public SituacaoProcessoService(SituacaoProcessoRepository situacaoProcessoRepository) {
-        this.situacaoProcessoRepository = situacaoProcessoRepository;
+    public SituacaoProcessoService(SituacaoProcessoDAO situacaoProcessoDAO) {
+        this.situacaoProcessoDAO = situacaoProcessoDAO;
     }
 
     public List<SituacaoProcesso> findAllActivSituacaoProcesso(){
-        return  situacaoProcessoRepository.findAll();
+        return  situacaoProcessoDAO.findAll();
     }
 }

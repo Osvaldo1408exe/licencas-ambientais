@@ -1,20 +1,20 @@
 package com.caj.ecolicencas.service;
 
 import com.caj.ecolicencas.model.entities.Licenca;
-import com.caj.ecolicencas.repository.LicencaRepository;
+import com.caj.ecolicencas.dao.LicencaDAO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class LicencaService {
-    private final LicencaRepository licencaRepository;
+    private final LicencaDAO licencaDAO;
 
-    public LicencaService(LicencaRepository licencaRepository){
-        this.licencaRepository = licencaRepository;
+    public LicencaService(LicencaDAO licencaDAO){
+        this.licencaDAO = licencaDAO;
     }
 
     public List<Licenca> findAllActiveLicenca(){
-        return licencaRepository.findAll();
+        return licencaDAO.findAll();
     }
 }

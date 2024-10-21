@@ -1,4 +1,4 @@
-package com.caj.ecolicencas.repository;
+package com.caj.ecolicencas.dao;
 
 import com.caj.ecolicencas.config.ConnectionFactory;
 import com.caj.ecolicencas.model.entities.SituacaoLicenca;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 @Repository
-public class SituacaoLicencaRepository {
+public class SituacaoLicencaDAO {
     String sql = "SELECT * FROM situacao_licenca WHERE ativo = 's'";
 
     public List<SituacaoLicenca> findAll(){

@@ -1,19 +1,19 @@
 package com.caj.ecolicencas.service;
 
 import com.caj.ecolicencas.model.entities.SimNao;
-import com.caj.ecolicencas.repository.SimNaoRepository;
+import com.caj.ecolicencas.dao.SimNaoDAO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public class SimNaoService {
-    private final SimNaoRepository simNaoRepository;
+    private final SimNaoDAO simNaoDAO;
 
-    public SimNaoService(SimNaoRepository simNaoRepository) {
-        this.simNaoRepository = simNaoRepository;
+    public SimNaoService(SimNaoDAO simNaoDAO) {
+        this.simNaoDAO = simNaoDAO;
     }
 
     public List<SimNao> findAllActiveSimNaos(){
-        return simNaoRepository.findAll();
+        return simNaoDAO.findAll();
     }
 }

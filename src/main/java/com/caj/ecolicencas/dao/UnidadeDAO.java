@@ -1,7 +1,7 @@
-package com.caj.ecolicencas.repository;
+package com.caj.ecolicencas.dao;
 
 import com.caj.ecolicencas.config.ConnectionFactory;
-import com.caj.ecolicencas.model.entities.SituacaoProcesso;
+import com.caj.ecolicencas.model.entities.Unidade;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -11,23 +11,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 @Repository
-public class SituacaoProcessoRepository {
-    String sql = "SELECT * FROM situacao_processo WHERE ativo = 's'";
+public class UnidadeDAO {
+    String sql = "SELECT * FROM unidade WHERE ativo = 's'";
 
-    public List<SituacaoProcesso> findAll(){
-        List<SituacaoProcesso> situacaoProcessos = new ArrayList<>();
+    public List<Unidade> findAll(){
+        List<Unidade> unidades = new ArrayList<>();
         try {
             Connection conn = ConnectionFactory.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()){
-                SituacaoProcesso situacao_processo = new SituacaoProcesso(rs.getInt("id_situacao_processo"), rs.getString("descricao"),rs.getString("ativo"));
-                situacaoProcessos.add(situacao_processo);
+                Unidade unidade = new Unidade(rs.getInt("id_unidade"), rs.getString("descricao"),rs.getString("ativo"));
+                unidades.add(unidade);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return situacaoProcessos;
+        return unidades;
     }
 }

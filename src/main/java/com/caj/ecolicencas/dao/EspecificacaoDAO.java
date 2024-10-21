@@ -1,7 +1,7 @@
-package com.caj.ecolicencas.repository;
+package com.caj.ecolicencas.dao;
 
 import com.caj.ecolicencas.config.ConnectionFactory;
-import com.caj.ecolicencas.model.entities.Unidade;
+import com.caj.ecolicencas.model.entities.Especificacao;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -10,24 +10,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-@Repository
-public class UnidadeRepository {
-    String sql = "SELECT * FROM unidade WHERE ativo = 's'";
 
-    public List<Unidade> findAll(){
-        List<Unidade> unidades = new ArrayList<>();
+@Repository
+public class EspecificacaoDAO {
+
+    String sql = "SELECT * FROM especificacao WHERE ativo = 's'";
+
+    public List<Especificacao> findAll(){
+        List<Especificacao> especificacaos = new ArrayList<>();
         try {
             Connection conn = ConnectionFactory.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
-
             while (rs.next()){
-                Unidade unidade = new Unidade(rs.getInt("id_unidade"), rs.getString("descricao"),rs.getString("ativo"));
-                unidades.add(unidade);
+                Especificacao especificacao = new Especificacao(rs.getInt("id_especificacao"),rs.getString("descricao"),rs.getString("ativo"));
+                especificacaos.add(especificacao);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return unidades;
+        return especificacaos;
     }
 }
