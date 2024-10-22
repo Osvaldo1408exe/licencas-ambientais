@@ -306,4 +306,6 @@ public class Licenca {
     public void setAtivo(String ativo) {
         this.ativo = ativo;
     }
+
+
 }

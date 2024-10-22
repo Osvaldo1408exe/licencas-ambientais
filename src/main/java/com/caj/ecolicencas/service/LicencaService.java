@@ -5,6 +5,7 @@ import com.caj.ecolicencas.dao.LicencaDAO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LicencaService {
@@ -16,5 +17,9 @@ public class LicencaService {
 
     public List<Licenca> findAllActiveLicenca(){
         return licencaDAO.findAll();
+    }
+
+    public Optional<Licenca> findActiveById(int id){
+        return  licencaDAO.findById(id);
     }
 }
