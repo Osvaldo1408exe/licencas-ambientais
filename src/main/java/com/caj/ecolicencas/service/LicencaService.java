@@ -44,19 +44,19 @@ public class LicencaService {
         }
     }
 
+    public int tramitacao(Licenca licenca){
+         LocalDate hoje = LocalDate.now();
+         LocalDate dataEmissao = licenca.getDataEmissao().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+         LocalDate dataRequerimento = licenca.getDataRequerimento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+         if(dataRequerimento != null && dataEmissao == null){
+             Period diferenca = Period.between(hoje,dataRequerimento);
+             return  diferenca.getDays();
+         } else if (dataRequerimento != null) {
+             Period diferenca = Period.between(dataEmissao,dataRequerimento);
+             return  diferenca.getDays();
+         }else {
+             return 0;
+         }
+    }
 }
