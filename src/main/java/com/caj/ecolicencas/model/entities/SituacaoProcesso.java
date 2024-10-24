@@ -1,9 +1,20 @@
 package com.caj.ecolicencas.model.entities;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "situacao_processo")
 public class SituacaoProcesso {
+    @Id
+    @Column(name = "id_situacao_processo")
     private int Id;
+    @Column(name = "descricao",nullable = false,length = 12)
     private String descricao;
+    @Column(name = "ativo",nullable = false,length = 1)
     private String ativo;
+
+    public SituacaoProcesso() {
+    }
 
     public SituacaoProcesso(int id, String descricao, String ativo) {
         Id = id;

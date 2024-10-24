@@ -1,34 +1,41 @@
 package com.caj.ecolicencas.service;
 
 import com.caj.ecolicencas.model.entities.Licenca;
-import com.caj.ecolicencas.dao.LicencaDAO;
+import com.caj.ecolicencas.repository.LicencaRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class LicencaService {
-    private final LicencaDAO licencaDAO;
+    private final LicencaRepository licencaRepository;
 
-    public LicencaService(LicencaDAO licencaDAO){
-        this.licencaDAO = licencaDAO;
+    public LicencaService(LicencaRepository licencaRepository){
+        this.licencaRepository = licencaRepository;
     }
+
+
 
     /*FUNÇÕES DE CRUD*/
 
-    //retorna todas as licencas
+    //todas as licencas
     public List<Licenca> findAllActiveLicenca(){
-        return licencaDAO.findAll();
+        return licencaRepository.findAll();
     }
-    //retorna a licenca pelo id enviado
-    public Optional<Licenca> findActiveById(int id){
-        return  licencaDAO.findById(id);
+
+
+    // licenca por id
+    public Optional<Licenca> findByLicencaById(int id){
+        return licencaRepository.findActiveByIdAndAtivo(id,"s");
     }
+
+
+
+
 
     /*FUNÇÕES DE CALCULO*/
 

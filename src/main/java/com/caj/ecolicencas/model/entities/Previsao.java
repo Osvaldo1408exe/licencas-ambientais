@@ -1,9 +1,21 @@
 package com.caj.ecolicencas.model.entities;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "previsao")
 public class Previsao {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_previsao")
     private int Id;
+    @Column(name = "descricao",nullable = false,length = 13)
     private String descricao;
+    @Column(name = "ativo",nullable = false,length = 1)
     private String ativo;
+
+    public Previsao() {
+    }
 
     public Previsao(int id, String descricao, String ativo) {
         Id = id;

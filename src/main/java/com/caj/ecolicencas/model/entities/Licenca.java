@@ -1,40 +1,125 @@
 package com.caj.ecolicencas.model.entities;
 
+import jakarta.persistence.*;
+
 import java.util.Date;
 
+@Entity
+@Table(name = "licencas")
 public class Licenca {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_licenca")
     private int id;
-    private String area;
-    private String unidade;
-    private String subUnidade;
+
+    // Relacionamentos com as outras tabelas
+    @ManyToOne
+    @JoinColumn(name = "id_area", nullable = false)
+    private Area area;
+
+    @ManyToOne
+    @JoinColumn(name = "id_unidade", nullable = false)
+    private Unidade unidade;
+
+    @ManyToOne
+    @JoinColumn(name = "id_subunidade", nullable = false)
+    private SubUnidade subUnidade;
+
+    @Column(name = "data_requerimento",nullable = true)
     private Date dataRequerimento;
-    private String controle;
-    private String orgao;
-    private String tipo;
-    private String especificacao;
+
+    @ManyToOne
+    @JoinColumn(name = "id_controle", nullable = false)
+    private Controle controle;
+
+    @ManyToOne
+    @JoinColumn(name = "id_orgao", nullable = false)
+    private OrgaoEmissor orgao;
+
+    @ManyToOne
+    @JoinColumn(name = "id_tipo", nullable = false)
+    private Tipo tipo;
+
+    @ManyToOne
+    @JoinColumn(name = "id_especificacao", nullable = false)
+    private Especificacao especificacao;
+
+    @ManyToOne
+    @JoinColumn(name = "id_previsao", nullable = false)
+    private Previsao previsao;
+
+    @ManyToOne
+    @JoinColumn(name = "id_requerimento", nullable = false)
+    private SimNao requerimento;
+
+    @ManyToOne
+    @JoinColumn(name = "id_emitida_nova_licenca", nullable = false)
+    private SimNao emitidaNovaLicenca;
+
+    @ManyToOne
+    @JoinColumn(name = "id_situacao_processo", nullable = false)
+    private SituacaoProcesso situacaoProcesso;
+
+    @ManyToOne
+    @JoinColumn(name = "id_atualizado_sa", nullable = false)
+    private SimNao atualizadoSa;
+
+    @ManyToOne
+    @JoinColumn(name = "id_situacao_licenca", nullable = false)
+    private SituacaoLicenca situacaoLicenca;
+
+    @ManyToOne
+    @JoinColumn(name = "id_setor_responsavel", nullable = false)
+    private SetorResponsavel setorResponsavel;
+
+    // Outros atributos diretos da tabela licencas
+    @Column(name = "numero_licenca", nullable = false, length = 100)
     private String numLicenca;
+
+    @Column(name = "fcei_sinfat")
     private int fceiSinfat;
+
+    @Column(name = "num_processo_sinfat", length = 50)
     private String numProcessoSinfat;
+
+    @Column(name = "sgpe", length = 100)
     private String sgpe;
+
+    @Column(name = "processo_sei", length = 100)
     private String processoSei;
+
+    @Column(name = "data_emissao")
     private Date dataEmissao;
-    private Date DataVencimento;
-    private String previsao;
-    private String requerimento;
+
+    @Column(name = "data_vencimento", nullable = false)
+    private Date dataVencimento;
+
+    @Column(name = "data_protocolo_orgao")
     private Date dataProcotoloOrgao;
-    private String emitidaNovaLicenca;
-    private String situacaoProcesso;
-    private String atualizadoSa;
+
+    @Column(name = "observacoes", length = 550)
     private String observacoes;
+
+    @Column(name = "providenciar_doc")
     private Date providenciarDoc;
+
+    @Column(name = "data_limite")
     private Date dataLimite;
+
+    @Column(name = "tempo_tramitacao", nullable = false)
     private int tempoTramitacao;
-    private String situacaoLicenca;
-    private String setorResponsavel;
+
+    @Column(name = "dias_para_vencer")
     private int diasParaVencer;
+
+    @Column(name = "ativo", length = 1, nullable = false)
     private String ativo;
 
-    public Licenca(int id, String area, String unidade, String subUnidade, Date dataRequerimento, String controle, String orgao, String tipo, String especificacao, String numLicenca, int fceiSinfat, String numProcessoSinfat, String sgpe, String processoSei, Date dataEmissao, Date dataVencimento, String previsao, String requerimento, Date dataProcotoloOrgao, String emitidaNovaLicenca, String situacaoProcesso, String atualizadoSa, String observacoes, Date providenciarDoc, Date dataLimite, int tempoTramitacao, String situacaoLicenca, String setorResponsavel, int diasParaVencer, String ativo) {
+    public Licenca() {
+
+    }
+
+    public Licenca(int id, Area area, Unidade unidade, SubUnidade subUnidade, Date dataRequerimento, Controle controle, OrgaoEmissor orgao, Tipo tipo, Especificacao especificacao, Previsao previsao, SimNao requerimento, SimNao emitidaNovaLicenca, SituacaoProcesso situacaoProcesso, SimNao atualizadoSa, SituacaoLicenca situacaoLicenca, SetorResponsavel setorResponsavel, String numLicenca, int fceiSinfat, String numProcessoSinfat, String sgpe, String processoSei, Date dataEmissao, Date dataVencimento, Date dataProcotoloOrgao, String observacoes, Date providenciarDoc, Date dataLimite, int tempoTramitacao, int diasParaVencer, String ativo) {
         this.id = id;
         this.area = area;
         this.unidade = unidade;
@@ -44,25 +129,25 @@ public class Licenca {
         this.orgao = orgao;
         this.tipo = tipo;
         this.especificacao = especificacao;
+        this.previsao = previsao;
+        this.requerimento = requerimento;
+        this.emitidaNovaLicenca = emitidaNovaLicenca;
+        this.situacaoProcesso = situacaoProcesso;
+        this.atualizadoSa = atualizadoSa;
+        this.situacaoLicenca = situacaoLicenca;
+        this.setorResponsavel = setorResponsavel;
         this.numLicenca = numLicenca;
         this.fceiSinfat = fceiSinfat;
         this.numProcessoSinfat = numProcessoSinfat;
         this.sgpe = sgpe;
         this.processoSei = processoSei;
         this.dataEmissao = dataEmissao;
-        DataVencimento = dataVencimento;
-        this.previsao = previsao;
-        this.requerimento = requerimento;
+        this.dataVencimento = dataVencimento;
         this.dataProcotoloOrgao = dataProcotoloOrgao;
-        this.emitidaNovaLicenca = emitidaNovaLicenca;
-        this.situacaoProcesso = situacaoProcesso;
-        this.atualizadoSa = atualizadoSa;
         this.observacoes = observacoes;
         this.providenciarDoc = providenciarDoc;
         this.dataLimite = dataLimite;
         this.tempoTramitacao = tempoTramitacao;
-        this.situacaoLicenca = situacaoLicenca;
-        this.setorResponsavel = setorResponsavel;
         this.diasParaVencer = diasParaVencer;
         this.ativo = ativo;
     }
@@ -75,28 +160,36 @@ public class Licenca {
         this.id = id;
     }
 
-    public String getArea() {
+    public Area getArea() {
         return area;
     }
 
-    public void setArea(String area) {
+    public void setArea(Area area) {
         this.area = area;
     }
 
-    public String getUnidade() {
+    public Unidade getUnidade() {
         return unidade;
     }
 
-    public void setUnidade(String unidade) {
+    public void setUnidade(Unidade unidade) {
         this.unidade = unidade;
     }
 
-    public String getSubUnidade() {
+    public SubUnidade getSubUnidade() {
         return subUnidade;
     }
 
-    public void setSubUnidade(String subUnidade) {
+    public void setSubUnidade(SubUnidade subUnidade) {
         this.subUnidade = subUnidade;
+    }
+
+    public Controle getControle() {
+        return controle;
+    }
+
+    public void setControle(Controle controle) {
+        this.controle = controle;
     }
 
     public Date getDataRequerimento() {
@@ -107,36 +200,84 @@ public class Licenca {
         this.dataRequerimento = dataRequerimento;
     }
 
-    public String getControle() {
-        return controle;
-    }
-
-    public void setControle(String controle) {
-        this.controle = controle;
-    }
-
-    public String getOrgao() {
+    public OrgaoEmissor getOrgao() {
         return orgao;
     }
 
-    public void setOrgao(String orgao) {
+    public void setOrgao(OrgaoEmissor orgao) {
         this.orgao = orgao;
     }
 
-    public String getTipo() {
+    public Tipo getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
 
-    public String getEspecificacao() {
+    public Especificacao getEspecificacao() {
         return especificacao;
     }
 
-    public void setEspecificacao(String especificacao) {
+    public void setEspecificacao(Especificacao especificacao) {
         this.especificacao = especificacao;
+    }
+
+    public Previsao getPrevisao() {
+        return previsao;
+    }
+
+    public void setPrevisao(Previsao previsao) {
+        this.previsao = previsao;
+    }
+
+    public SimNao getRequerimento() {
+        return requerimento;
+    }
+
+    public void setRequerimento(SimNao requerimento) {
+        this.requerimento = requerimento;
+    }
+
+    public SimNao getEmitidaNovaLicenca() {
+        return emitidaNovaLicenca;
+    }
+
+    public void setEmitidaNovaLicenca(SimNao emitidaNovaLicenca) {
+        this.emitidaNovaLicenca = emitidaNovaLicenca;
+    }
+
+    public SituacaoProcesso getSituacaoProcesso() {
+        return situacaoProcesso;
+    }
+
+    public void setSituacaoProcesso(SituacaoProcesso situacaoProcesso) {
+        this.situacaoProcesso = situacaoProcesso;
+    }
+
+    public SimNao getAtualizadoSa() {
+        return atualizadoSa;
+    }
+
+    public void setAtualizadoSa(SimNao atualizadoSa) {
+        this.atualizadoSa = atualizadoSa;
+    }
+
+    public SituacaoLicenca getSituacaoLicenca() {
+        return situacaoLicenca;
+    }
+
+    public void setSituacaoLicenca(SituacaoLicenca situacaoLicenca) {
+        this.situacaoLicenca = situacaoLicenca;
+    }
+
+    public SetorResponsavel getSetorResponsavel() {
+        return setorResponsavel;
+    }
+
+    public void setSetorResponsavel(SetorResponsavel setorResponsavel) {
+        this.setorResponsavel = setorResponsavel;
     }
 
     public String getNumLicenca() {
@@ -188,27 +329,11 @@ public class Licenca {
     }
 
     public Date getDataVencimento() {
-        return DataVencimento;
+        return dataVencimento;
     }
 
     public void setDataVencimento(Date dataVencimento) {
-        DataVencimento = dataVencimento;
-    }
-
-    public String getPrevisao() {
-        return previsao;
-    }
-
-    public void setPrevisao(String previsao) {
-        this.previsao = previsao;
-    }
-
-    public String getRequerimento() {
-        return requerimento;
-    }
-
-    public void setRequerimento(String requerimento) {
-        this.requerimento = requerimento;
+        this.dataVencimento = dataVencimento;
     }
 
     public Date getDataProcotoloOrgao() {
@@ -217,30 +342,6 @@ public class Licenca {
 
     public void setDataProcotoloOrgao(Date dataProcotoloOrgao) {
         this.dataProcotoloOrgao = dataProcotoloOrgao;
-    }
-
-    public String getEmitidaNovaLicenca() {
-        return emitidaNovaLicenca;
-    }
-
-    public void setEmitidaNovaLicenca(String emitidaNovaLicenca) {
-        this.emitidaNovaLicenca = emitidaNovaLicenca;
-    }
-
-    public String getSituacaoProcesso() {
-        return situacaoProcesso;
-    }
-
-    public void setSituacaoProcesso(String situacaoProcesso) {
-        this.situacaoProcesso = situacaoProcesso;
-    }
-
-    public String getAtualizadoSa() {
-        return atualizadoSa;
-    }
-
-    public void setAtualizadoSa(String atualizadoSa) {
-        this.atualizadoSa = atualizadoSa;
     }
 
     public String getObservacoes() {
@@ -275,22 +376,6 @@ public class Licenca {
         this.tempoTramitacao = tempoTramitacao;
     }
 
-    public String getSituacaoLicenca() {
-        return situacaoLicenca;
-    }
-
-    public void setSituacaoLicenca(String situacaoLicenca) {
-        this.situacaoLicenca = situacaoLicenca;
-    }
-
-    public String getSetorResponsavel() {
-        return setorResponsavel;
-    }
-
-    public void setSetorResponsavel(String setorResponsavel) {
-        this.setorResponsavel = setorResponsavel;
-    }
-
     public int getDiasParaVencer() {
         return diasParaVencer;
     }
@@ -306,6 +391,4 @@ public class Licenca {
     public void setAtivo(String ativo) {
         this.ativo = ativo;
     }
-
-
 }

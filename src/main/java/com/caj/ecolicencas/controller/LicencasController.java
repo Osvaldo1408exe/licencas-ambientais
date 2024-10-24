@@ -25,11 +25,7 @@ public class LicencasController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Licenca> getLicencaById(@PathVariable int id){
-        Optional<Licenca> licenca = licencaService.findActiveById(id);
-        if(licenca.isPresent()){
-            return ResponseEntity.ok(licenca.get());
-        }else {
-            return ResponseEntity.notFound().build();
-        }
+        Optional<Licenca> licenca = licencaService.findByLicencaById(id);
+        return licenca.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
