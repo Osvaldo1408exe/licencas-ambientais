@@ -1,7 +1,6 @@
 package com.caj.ecolicencas.service;
 
 import com.caj.ecolicencas.model.entities.Controle;
-import com.caj.ecolicencas.dao.ControleDAO;
 import com.caj.ecolicencas.repository.ControleRepository;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,6 @@
 package com.caj.ecolicencas.service;
 
 import com.caj.ecolicencas.model.entities.Area;
-import com.caj.ecolicencas.dao.AreaDAO;
 import com.caj.ecolicencas.repository.AreaRepository;
 import org.springframework.stereotype.Service;
 
