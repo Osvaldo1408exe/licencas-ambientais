@@ -28,4 +28,10 @@ public class LicencasController {
         Optional<Licenca> licenca = licencaService.findByLicencaById(id);
         return licenca.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Licenca> AtualizarLicenca(@PathVariable int id, @RequestBody Licenca licencaAtualizada){
+        Licenca licencaPut = licencaService.updateLicenca(id,licencaAtualizada);
+        return ResponseEntity.ok(licencaPut);
+    }
 }
