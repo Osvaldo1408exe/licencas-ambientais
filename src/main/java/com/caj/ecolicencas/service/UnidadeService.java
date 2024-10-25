@@ -1,20 +1,20 @@
 package com.caj.ecolicencas.service;
 
 import com.caj.ecolicencas.model.entities.Unidade;
-import com.caj.ecolicencas.dao.UnidadeDAO;
+import com.caj.ecolicencas.repository.UnidadeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UnidadeService {
-    private final UnidadeDAO unidadeDAO;
+    private final UnidadeRepository unidadeRepository;
 
-    public UnidadeService(UnidadeDAO unidadeDAO) {
-        this.unidadeDAO = unidadeDAO;
+    public UnidadeService(UnidadeRepository unidadeRepository) {
+        this.unidadeRepository = unidadeRepository;
     }
 
     public List<Unidade> findAllActivUnidade() {
-        return unidadeDAO.findAll();
+        return unidadeRepository.findAll();
     }
 }

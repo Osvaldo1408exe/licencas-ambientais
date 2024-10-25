@@ -1,20 +1,20 @@
 package com.caj.ecolicencas.service;
 
 import com.caj.ecolicencas.model.entities.OrgaoEmissor;
-import com.caj.ecolicencas.dao.OrgaoEmissorDAO;
+import com.caj.ecolicencas.repository.OrgaoEmissorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class OrgaoEmissorService {
-    private final OrgaoEmissorDAO orgaoEmissorDAO;
+    private final OrgaoEmissorRepository orgaoEmissorRepository;
 
-    public OrgaoEmissorService(OrgaoEmissorDAO orgaoEmissorDAO){
-        this.orgaoEmissorDAO = orgaoEmissorDAO;
+    public OrgaoEmissorService(OrgaoEmissorRepository orgaoEmissorRepository){
+        this.orgaoEmissorRepository = orgaoEmissorRepository;
     }
 
     public List<OrgaoEmissor> findAllActiveOrgaosEmissores(){
-        return orgaoEmissorDAO.fingAll();
+        return orgaoEmissorRepository.findAll();
     }
 }
