@@ -2,18 +2,19 @@ package com.caj.ecolicencas.service;
 
 import com.caj.ecolicencas.model.entities.Controle;
 import com.caj.ecolicencas.dao.ControleDAO;
+import com.caj.ecolicencas.repository.ControleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public class ControleService {
-    private final ControleDAO controleDAO;
+    private final ControleRepository controleRepository;
 
-    public  ControleService (ControleDAO controleDAO) {
-        this.controleDAO = controleDAO;
+    public  ControleService (ControleRepository controleRepository) {
+        this.controleRepository = controleRepository;
     }
 
     public List<Controle> getAllActiveControles(){
-        return controleDAO.findAll();
+        return controleRepository.findAll();
     }
 }
