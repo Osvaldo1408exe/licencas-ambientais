@@ -5,10 +5,10 @@ import com.caj.ecolicencas.repository.LicencaRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -30,6 +30,14 @@ public class LicencaService {
 
     public Optional<Licenca> findByLicencaById(int id){
         return licencaRepository.findActiveByIdAndAtivo(id,"s");
+    }
+
+    public Licenca insertLicencas(Licenca licenca){
+        licenca.setTempoTramitacao(tramitacao(licenca));
+        licenca.setDiasParaVencer(diasParaVencer(licenca));
+        licenca.setDataLimite(dataLimite(licenca));
+        licencaRepository.save(licenca);
+        return licenca;
     }
 
     public Licenca updateLicenca(int id,Licenca licencaAtualizada){
@@ -60,9 +68,9 @@ public class LicencaService {
             licenca.setDataEmissao(licencaAtualizada.getDataEmissao());
             licenca.setDataVencimento(licencaAtualizada.getDataVencimento());
             licenca.setDataProcotoloOrgao(licencaAtualizada.getDataProcotoloOrgao());
-            licenca.setObservacoes("Teste inserção via jpa/hibernate");
+            licenca.setObservacoes(licencaAtualizada.getObservacoes());
             //licenca.setProvidenciarDoc(); fazer método
-            //licenca.setDataLimite() fazer metodo
+            licenca.setDataLimite(dataLimite(licencaAtualizada));
             licenca.setTempoTramitacao(tramitacao(licencaAtualizada));
             licenca.setDiasParaVencer(diasParaVencer(licencaAtualizada));
 
@@ -72,6 +80,13 @@ public class LicencaService {
         }
     };
 
+    public Licenca deleteLicencas(int id){
+        Licenca licenca = licencaRepository.getReferenceById(id);
+        licenca.setAtivo("n");
+        licencaRepository.save(licenca);
+        return licenca;
+    }
+
 
 
 
@@ -80,10 +95,10 @@ public class LicencaService {
 
     /*FUNÇÕES DE CALCULO*/
 
-    public int diasParaVencer(Licenca licenca){
+    private int diasParaVencer(Licenca licenca){
         LocalDate hoje = LocalDate.now();
         //converte data para localDate
-        LocalDate dataVencimento = licenca.getDataVencimento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate dataVencimento = licenca.getDataVencimento();
         if(hoje.isBefore(dataVencimento)){
             int diferenca =  (int) ChronoUnit.DAYS.between(hoje,dataVencimento);
             return diferenca;
@@ -92,10 +107,10 @@ public class LicencaService {
         }
     }
 
-    public int tramitacao(Licenca licenca){
+    private int tramitacao(Licenca licenca){
          LocalDate hoje = LocalDate.now();
-         LocalDate dataEmissao = licenca.getDataEmissao() != null ? licenca.getDataEmissao().toInstant().atZone(ZoneId.systemDefault()).toLocalDate() : null;
-         LocalDate dataRequerimento = licenca.getDataRequerimento() != null ? licenca.getDataRequerimento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate() : null;
+         LocalDate dataEmissao = licenca.getDataEmissao() != null ? licenca.getDataEmissao() : null;
+         LocalDate dataRequerimento = licenca.getDataRequerimento() != null ? licenca.getDataRequerimento() : null;
 
          if (dataRequerimento != null){
              if(dataEmissao == null){
@@ -108,5 +123,18 @@ public class LicencaService {
          }
     }
 
+    private LocalDate dataLimite(Licenca licenca){
+        int unidade = licenca.getUnidade().getId();
+        LocalDate data_vencimento = licenca.getDataVencimento() != null ? licenca.getDataVencimento() : null;
+        int tipo = licenca.getTipo().getId();
+        int previsao = licenca.getPrevisao().getId();
+
+        if (data_vencimento == null){return null;}
+        if (unidade == 34){return data_vencimento.minusMonths(3);}
+        else if(tipo == 10 && previsao == 4){return data_vencimento.minusMonths(4);}
+        else if (tipo == 4 && previsao == 5) {return  data_vencimento.minusMonths(3);}
+        else if(previsao == 3 || (tipo == 14 || tipo == 13 || tipo == 8)){return  data_vencimento.minusMonths(4);}
+        return data_vencimento;
+    }
 
 }

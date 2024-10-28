@@ -2,7 +2,8 @@ package com.caj.ecolicencas.model.entities;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "licencas")
@@ -26,7 +27,7 @@ public class Licenca {
     private SubUnidade subUnidade;
 
     @Column(name = "data_requerimento",nullable = true)
-    private Date dataRequerimento;
+    private LocalDate dataRequerimento;
 
     @ManyToOne
     @JoinColumn(name = "id_controle", nullable = false)
@@ -89,22 +90,22 @@ public class Licenca {
     private String processoSei;
 
     @Column(name = "data_emissao")
-    private Date dataEmissao;
+    private LocalDate dataEmissao;
 
     @Column(name = "data_vencimento", nullable = false)
-    private Date dataVencimento;
+    private LocalDate dataVencimento;
 
     @Column(name = "data_protocolo_orgao")
-    private Date dataProcotoloOrgao;
+    private LocalDate dataProcotoloOrgao;
 
     @Column(name = "observacoes", length = 550)
     private String observacoes;
 
     @Column(name = "providenciar_doc")
-    private Date providenciarDoc;
+    private LocalDate providenciarDoc;
 
     @Column(name = "data_limite")
-    private Date dataLimite;
+    private LocalDate dataLimite;
 
     @Column(name = "tempo_tramitacao", nullable = false)
     private int tempoTramitacao;
@@ -119,7 +120,7 @@ public class Licenca {
 
     }
 
-    public Licenca(int id, Area area, Unidade unidade, SubUnidade subUnidade, Date dataRequerimento, Controle controle, OrgaoEmissor orgao, Tipo tipo, Especificacao especificacao, Previsao previsao, SimNao requerimento, SimNao emitidaNovaLicenca, SituacaoProcesso situacaoProcesso, SimNao atualizadoSa, SituacaoLicenca situacaoLicenca, SetorResponsavel setorResponsavel, String numLicenca, int fceiSinfat, String numProcessoSinfat, String sgpe, String processoSei, Date dataEmissao, Date dataVencimento, Date dataProcotoloOrgao, String observacoes, Date providenciarDoc, Date dataLimite, int tempoTramitacao, int diasParaVencer, String ativo) {
+    public Licenca(int id, Area area, Unidade unidade, SubUnidade subUnidade, LocalDate dataRequerimento, Controle controle, OrgaoEmissor orgao, Tipo tipo, Especificacao especificacao, Previsao previsao, SimNao requerimento, SimNao emitidaNovaLicenca, SituacaoProcesso situacaoProcesso, SimNao atualizadoSa, SituacaoLicenca situacaoLicenca, SetorResponsavel setorResponsavel, String numLicenca, int fceiSinfat, String numProcessoSinfat, String sgpe, String processoSei, LocalDate dataEmissao, LocalDate dataVencimento, LocalDate dataProcotoloOrgao, String observacoes, LocalDate providenciarDoc, LocalDate dataLimite, int tempoTramitacao, int diasParaVencer, String ativo) {
         this.id = id;
         this.area = area;
         this.unidade = unidade;
@@ -192,11 +193,11 @@ public class Licenca {
         this.controle = controle;
     }
 
-    public Date getDataRequerimento() {
+    public LocalDate getDataRequerimento() {
         return dataRequerimento;
     }
 
-    public void setDataRequerimento(Date dataRequerimento) {
+    public void setDataRequerimento(LocalDate dataRequerimento) {
         this.dataRequerimento = dataRequerimento;
     }
 
@@ -320,27 +321,27 @@ public class Licenca {
         this.processoSei = processoSei;
     }
 
-    public Date getDataEmissao() {
+    public LocalDate getDataEmissao() {
         return dataEmissao;
     }
 
-    public void setDataEmissao(Date dataEmissao) {
+    public void setDataEmissao(LocalDate dataEmissao) {
         this.dataEmissao = dataEmissao;
     }
 
-    public Date getDataVencimento() {
+    public LocalDate getDataVencimento() {
         return dataVencimento;
     }
 
-    public void setDataVencimento(Date dataVencimento) {
+    public void setDataVencimento(LocalDate dataVencimento) {
         this.dataVencimento = dataVencimento;
     }
 
-    public Date getDataProcotoloOrgao() {
+    public LocalDate getDataProcotoloOrgao() {
         return dataProcotoloOrgao;
     }
 
-    public void setDataProcotoloOrgao(Date dataProcotoloOrgao) {
+    public void setDataProcotoloOrgao(LocalDate dataProcotoloOrgao) {
         this.dataProcotoloOrgao = dataProcotoloOrgao;
     }
 
@@ -352,19 +353,19 @@ public class Licenca {
         this.observacoes = observacoes;
     }
 
-    public Date getProvidenciarDoc() {
+    public LocalDate getProvidenciarDoc() {
         return providenciarDoc;
     }
 
-    public void setProvidenciarDoc(Date providenciarDoc) {
+    public void setProvidenciarDoc(LocalDate providenciarDoc) {
         this.providenciarDoc = providenciarDoc;
     }
 
-    public Date getDataLimite() {
+    public LocalDate getDataLimite() {
         return dataLimite;
     }
 
-    public void setDataLimite(Date dataLimite) {
+    public void setDataLimite(LocalDate dataLimite) {
         this.dataLimite = dataLimite;
     }
 

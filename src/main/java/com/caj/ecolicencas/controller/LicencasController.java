@@ -19,6 +19,7 @@ public class LicencasController {
 
     @GetMapping
     public ResponseEntity<List<Licenca>> getLicencas(){
+
         List<Licenca> licencas = licencaService.findAllActiveLicenca();
         return ResponseEntity.ok(licencas);
     }
@@ -29,9 +30,21 @@ public class LicencasController {
         return licenca.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PostMapping
+    public ResponseEntity<Licenca> adicionarLicenca(@RequestBody Licenca licenca){
+        Licenca licencaNova = licencaService.insertLicencas(licenca);
+        return ResponseEntity.ok(licencaNova);
+    }
+
     @PutMapping("{id}")
-    public ResponseEntity<Licenca> AtualizarLicenca(@PathVariable int id, @RequestBody Licenca licencaAtualizada){
+    public ResponseEntity<Licenca> atualizarLicenca(@PathVariable int id, @RequestBody Licenca licencaAtualizada){
         Licenca licencaPut = licencaService.updateLicenca(id,licencaAtualizada);
         return ResponseEntity.ok(licencaPut);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deletarLicenca(@PathVariable int id){
+        return ResponseEntity.ok(licencaService.deleteLicencas(id));
+
     }
 }
