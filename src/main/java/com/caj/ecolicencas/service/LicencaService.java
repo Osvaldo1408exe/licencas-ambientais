@@ -1,7 +1,14 @@
 package com.caj.ecolicencas.service;
 
-import com.caj.ecolicencas.model.entities.*;
-import com.caj.ecolicencas.repository.*;
+import com.caj.ecolicencas.model.entities.Licenca;
+import com.caj.ecolicencas.model.entities.Previsao;
+import com.caj.ecolicencas.model.entities.Tipo;
+import com.caj.ecolicencas.model.entities.Unidade;
+import com.caj.ecolicencas.repository.LicencaRepository;
+import com.caj.ecolicencas.repository.PrevisaoRepository;
+import com.caj.ecolicencas.repository.TipoRepository;
+import com.caj.ecolicencas.repository.UnidadeRepository;
+import jakarta.annotation.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,14 +22,12 @@ public class LicencaService {
     private final UnidadeRepository unidadeRepository;
     private final PrevisaoRepository previsaoRepository;
     private final TipoRepository tipoRepository;
-    private final ControleRepository controleRepository;
 
-    public LicencaService(LicencaRepository licencaRepository, UnidadeRepository unidadeRepository, PrevisaoRepository previsaoRepository, TipoRepository tipoRepository, ControleRepository controleRepository) {
+    public LicencaService(LicencaRepository licencaRepository, UnidadeRepository unidadeRepository, PrevisaoRepository previsaoRepository, TipoRepository tipoRepository) {
         this.licencaRepository = licencaRepository;
         this.unidadeRepository = unidadeRepository;
         this.previsaoRepository = previsaoRepository;
         this.tipoRepository = tipoRepository;
-        this.controleRepository = controleRepository;
     }
     /*FUNÇÕES DE CRUD*/
 
@@ -72,7 +77,7 @@ public class LicencaService {
             licenca.setDataVencimento(licencaAtualizada.getDataVencimento());
             licenca.setDataProcotoloOrgao(licencaAtualizada.getDataProcotoloOrgao());
             licenca.setObservacoes(licencaAtualizada.getObservacoes());
-            licenca.setProvidenciarDoc(providenciarDoc(licencaAtualizada));
+            //licenca.setProvidenciarDoc(); fazer método
             licenca.setDataLimite(dataLimite(licencaAtualizada));
             licenca.setTempoTramitacao(tramitacao(licencaAtualizada));
             licenca.setDiasParaVencer(diasParaVencer(licencaAtualizada));
@@ -132,48 +137,12 @@ public class LicencaService {
         Tipo tipo = tipoRepository.getReferenceById(licenca.getTipo().getId());
         Previsao previsao = previsaoRepository.getReferenceById( licenca.getPrevisao().getId());
 
-        if (data_vencimento == null){
-            return null;
-        }
-        else if (unidade.getDescricao().equals("LCQ")){
-            return data_vencimento.minusMonths(3);
-        }
-        else if(tipo.getDescricao().equals("LAO") && previsao.getDescricao().equals("Renovar")){
-            return data_vencimento.minusMonths(4);
-        }
-        else if (tipo.getDescricao().equals("Outorga") && previsao.getDescricao().equals("Não Renovar")) {
-            return  data_vencimento.minusMonths(3);
-        }
-        else if(previsao.getDescricao().equals("Não Prorrogar") || (tipo.getDescricao().equals("LAI") || tipo.getDescricao().equals("LAP") || tipo.getDescricao().equals("LAP/LAI"))){
-            return  data_vencimento.minusMonths(4);
-        }
+        if (data_vencimento == null){return null;}
+        if (unidade.getDescricao().equals("LCQ")){return data_vencimento.minusMonths(3);}
+        else if(tipo.getDescricao().equals("LAO") && previsao.getDescricao().equals("Renovar")){return data_vencimento.minusMonths(4);}
+        else if (tipo.getDescricao().equals("Outorga") && previsao.getDescricao().equals("Não Renovar")) {return  data_vencimento.minusMonths(3);}
+        else if(previsao.getDescricao().equals("Não Prorrogar") || (tipo.getDescricao().equals("LAI") || tipo.getDescricao().equals("LAP") || tipo.getDescricao().equals("LAP/LAI"))){return  data_vencimento.minusMonths(4);}
         return data_vencimento;
     }
-
-    private LocalDate providenciarDoc(Licenca licenca) {
-        LocalDate data_vencimento = licenca.getDataVencimento() != null ? licenca.getDataVencimento() : null;
-        Tipo tipo = tipoRepository.getReferenceById(licenca.getTipo().getId());
-        Previsao previsao = previsaoRepository.getReferenceById(licenca.getPrevisao().getId());
-        Controle controle = controleRepository.getReferenceById(licenca.getControle().getId());
-
-        if (data_vencimento == null) return null;
-        else if (controle.getDescricao().equals("Condicionante") || controle.getDescricao().equals("Info_Complementar") || previsao.getDescricao().equals("Prorrogar")) {
-            return data_vencimento.minusMonths(1);
-        } else if (previsao.getDescricao().equals("Não Prorrogar") || (tipo.getDescricao().equals("LAI") || tipo.getDescricao().equals("LAP") || tipo.getDescricao().equals("LAP/LAI"))) {
-            return data_vencimento.minusMonths(6);
-        } else if (tipo.getDescricao().equals("AuA")) {
-            return data_vencimento.minusMonths(3);
-        } else if (tipo.getDescricao().equals("LAO")) {
-            return data_vencimento.minusMonths(6);
-        } else if (tipo.getDescricao().equals("Outorga")) {
-            return data_vencimento.minusMonths(4);
-        } else if (tipo.getDescricao().equals("Renovar")) {
-            return data_vencimento.minusMonths(1);
-        } else {
-            return null;
-        }
-    }
-
-
 
 }
