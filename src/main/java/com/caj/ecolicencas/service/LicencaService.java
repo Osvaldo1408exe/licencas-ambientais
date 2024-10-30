@@ -16,13 +16,19 @@ public class LicencaService {
     private final PrevisaoRepository previsaoRepository;
     private final TipoRepository tipoRepository;
     private final ControleRepository controleRepository;
+    private final SituacaoProcessoRepository situacaoProcessoRepository;
+    private final SimNaoRepository simNaoRepository;
+    private final SituacaoLicencaRepository situacaoLicencaRepository;
 
-    public LicencaService(LicencaRepository licencaRepository, UnidadeRepository unidadeRepository, PrevisaoRepository previsaoRepository, TipoRepository tipoRepository, ControleRepository controleRepository) {
+    public LicencaService(LicencaRepository licencaRepository, UnidadeRepository unidadeRepository, PrevisaoRepository previsaoRepository, TipoRepository tipoRepository, ControleRepository controleRepository, SituacaoProcessoRepository situacaoProcessoRepository, SimNaoRepository simNaoRepository, SituacaoLicencaRepository situacaoLicencaRepository) {
         this.licencaRepository = licencaRepository;
         this.unidadeRepository = unidadeRepository;
         this.previsaoRepository = previsaoRepository;
         this.tipoRepository = tipoRepository;
         this.controleRepository = controleRepository;
+        this.situacaoProcessoRepository = situacaoProcessoRepository;
+        this.simNaoRepository = simNaoRepository;
+        this.situacaoLicencaRepository = situacaoLicencaRepository;
     }
     /*FUNÇÕES DE CRUD*/
 
@@ -61,7 +67,7 @@ public class LicencaService {
             licenca.setEmitidaNovaLicenca(licencaAtualizada.getEmitidaNovaLicenca());
             licenca.setSituacaoProcesso(licencaAtualizada.getSituacaoProcesso());
             licenca.setAtualizadoSa(licencaAtualizada.getAtualizadoSa());
-            //licenca.setSituacaoLicenca(); fazer o metodo
+            licenca.setSituacaoLicenca(situacaoLicenca(licencaAtualizada));
             licenca.setSetorResponsavel(licencaAtualizada.getSetorResponsavel());
             licenca.setNumLicenca(licencaAtualizada.getNumLicenca());
             licenca.setFceiSinfat(licencaAtualizada.getFceiSinfat());
@@ -72,7 +78,7 @@ public class LicencaService {
             licenca.setDataVencimento(licencaAtualizada.getDataVencimento());
             licenca.setDataProcotoloOrgao(licencaAtualizada.getDataProcotoloOrgao());
             licenca.setObservacoes(licencaAtualizada.getObservacoes());
-            //licenca.setProvidenciarDoc(); fazer método
+            licenca.setProvidenciarDoc(providenciarDoc(licencaAtualizada));
             licenca.setDataLimite(dataLimite(licencaAtualizada));
             licenca.setTempoTramitacao(tramitacao(licencaAtualizada));
             licenca.setDiasParaVencer(diasParaVencer(licencaAtualizada));
@@ -163,6 +169,37 @@ public class LicencaService {
         } else {
             return null;
         }
+    }
+
+    private SituacaoLicenca situacaoLicenca(Licenca licenca){
+        Unidade unidade = unidadeRepository.getReferenceById(licenca.getUnidade().getId());
+        LocalDate data_emissao = licenca.getDataEmissao() != null ? licenca.getDataEmissao() : null;
+        LocalDate data_vencimento = licenca.getDataVencimento() != null ? licenca.getDataVencimento() : null;
+        Tipo tipo = tipoRepository.getReferenceById(licenca.getTipo().getId());
+        Previsao previsao = previsaoRepository.getReferenceById(licenca.getPrevisao().getId());
+        Controle controle = controleRepository.getReferenceById(licenca.getControle().getId());
+        SituacaoProcesso situacao_processo = situacaoProcessoRepository.getReferenceById(licenca.getSituacaoProcesso().getId());
+        SimNao emitidaNovaLicenca = simNaoRepository.getReferenceById(licenca.getEmitidaNovaLicenca().getId());
+        SimNao requerimento = simNaoRepository.getReferenceById(licenca.getRequerimento().getId());
+        LocalDate providenciarDoc = providenciarDoc(licenca);
+        LocalDate dataLimite = dataLimite(licenca);
+
+        if (unidade.getDescricao().equals("-") || data_vencimento == null){
+            return situacaoLicencaRepository.findByDescricao("Inválida");
+        }else if(data_emissao == null){
+            return situacaoLicencaRepository.findByDescricao("Aguardando análise");
+        }else if(previsao.getDescricao().equals("Resolução alterada - Porte inferior a P")){
+            return situacaoLicencaRepository.findByDescricao("Resolução alterada - Porte inferior a P");
+        } else if (situacao_processo.getDescricao().equals("Concluído") && (emitidaNovaLicenca.getDescricao().equals("NÃO") || emitidaNovaLicenca.getDescricao().equals("NA"))) {
+            return situacaoLicencaRepository.findByDescricao("Processo Concluído");
+        }
+        if (controle.getDescricao().equals("Autorização")){
+            if (requerimento.getDescricao().equals("SIM") && !situacao_processo.getDescricao().equals("Concluído") && (previsao.getDescricao().equals("Prorrogar") || previsao.getDescricao().equals("Renovar"))){
+                return situacaoLicencaRepository.findByDescricao("Em renovação");
+            }
+        }
+
+
     }
 
 }
