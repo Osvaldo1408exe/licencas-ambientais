@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,19 +99,17 @@ public class LicencaService {
 
 
 
-
-
-
-
     /*FUNÇÕES DE CALCULO*/
 
     private int diasParaVencer(Licenca licenca){
         LocalDate hoje = LocalDate.now();
         //converte data para localDate
         LocalDate dataVencimento = licenca.getDataVencimento();
+        if (dataVencimento == null){
+            return 0;
+        }
         if(hoje.isBefore(dataVencimento)){
-            int diferenca =  (int) ChronoUnit.DAYS.between(hoje,dataVencimento);
-            return diferenca;
+            return (int) ChronoUnit.DAYS.between(hoje,dataVencimento);
         }else{
             return 0;
         }
@@ -124,7 +123,7 @@ public class LicencaService {
          if (dataRequerimento != null){
              if(dataEmissao == null){
                  return (int) ChronoUnit.DAYS.between(dataRequerimento,hoje);
-             } else{
+             }else{
                  return (int) ChronoUnit.DAYS.between(dataRequerimento, dataEmissao);
              }
          }else{
@@ -139,7 +138,7 @@ public class LicencaService {
         Previsao previsao = previsaoRepository.getReferenceById( licenca.getPrevisao().getId());
 
         if (data_vencimento == null){return null;}
-        if (unidade.getDescricao().equals("LCQ")){return data_vencimento.minusMonths(3);}
+        else if (unidade.getDescricao().equals("LCQ")){return data_vencimento.minusMonths(3);}
         else if(tipo.getDescricao().equals("LAO") && previsao.getDescricao().equals("Renovar")){return data_vencimento.minusMonths(4);}
         else if (tipo.getDescricao().equals("Outorga") && previsao.getDescricao().equals("Não Renovar")) {return  data_vencimento.minusMonths(3);}
         else if(previsao.getDescricao().equals("Não Prorrogar") || (tipo.getDescricao().equals("LAI") || tipo.getDescricao().equals("LAP") || tipo.getDescricao().equals("LAP/LAI"))){return  data_vencimento.minusMonths(4);}
@@ -148,12 +147,14 @@ public class LicencaService {
 
 
     private LocalDate providenciarDoc(Licenca licenca) {
-        LocalDate data_vencimento = licenca.getDataVencimento() != null ? licenca.getDataVencimento() : null;
+        LocalDate data_vencimento =  licenca.getDataVencimento() ;
         Tipo tipo = tipoRepository.getReferenceById(licenca.getTipo().getId());
         Previsao previsao = previsaoRepository.getReferenceById(licenca.getPrevisao().getId());
         Controle controle = controleRepository.getReferenceById(licenca.getControle().getId());
 
-        if (data_vencimento == null) return null;
+        if (data_vencimento == null){
+            return null;
+        }
         else if (controle.getDescricao().equals("Condicionante") || controle.getDescricao().equals("Info_Complementar") || previsao.getDescricao().equals("Prorrogar")) {
             return data_vencimento.minusMonths(1);
         } else if (previsao.getDescricao().equals("Não Prorrogar") || (tipo.getDescricao().equals("LAI") || tipo.getDescricao().equals("LAP") || tipo.getDescricao().equals("LAP/LAI"))) {
@@ -164,13 +165,15 @@ public class LicencaService {
             return data_vencimento.minusMonths(6);
         } else if (tipo.getDescricao().equals("Outorga")) {
             return data_vencimento.minusMonths(4);
-        } else if (tipo.getDescricao().equals("Renovar")) {
+        } else if (previsao.getDescricao().equals("Renovar")) {
             return data_vencimento.minusMonths(1);
         } else {
             return null;
         }
     }
 
+
+    //Função do campo de situações
     private SituacaoLicenca situacaoLicenca(Licenca licenca){
         Unidade unidade = unidadeRepository.getReferenceById(licenca.getUnidade().getId());
         LocalDate data_emissao = licenca.getDataEmissao() != null ? licenca.getDataEmissao() : null;
@@ -181,23 +184,80 @@ public class LicencaService {
         SituacaoProcesso situacao_processo = situacaoProcessoRepository.getReferenceById(licenca.getSituacaoProcesso().getId());
         SimNao emitidaNovaLicenca = simNaoRepository.getReferenceById(licenca.getEmitidaNovaLicenca().getId());
         SimNao requerimento = simNaoRepository.getReferenceById(licenca.getRequerimento().getId());
-        LocalDate providenciarDoc = providenciarDoc(licenca);
+        LocalDate providenciarDoc =  providenciarDoc(licenca);
         LocalDate dataLimite = dataLimite(licenca);
+        LocalDate dataAtual = LocalDate.now();
 
-        if (unidade.getDescricao().equals("-") || data_vencimento == null){
+
+        if (unidade.getDescricao().equals("-")){
             return situacaoLicencaRepository.findByDescricao("Inválida");
-        }else if(data_emissao == null){
+        }
+        if(data_emissao == null){
             return situacaoLicencaRepository.findByDescricao("Aguardando análise");
-        }else if(previsao.getDescricao().equals("Resolução alterada - Porte inferior a P")){
+        }
+        if(previsao.getDescricao().equals("Resolução alterada - Porte inferior a P")){
             return situacaoLicencaRepository.findByDescricao("Resolução alterada - Porte inferior a P");
-        } else if (situacao_processo.getDescricao().equals("Concluído") && (emitidaNovaLicenca.getDescricao().equals("NÃO") || emitidaNovaLicenca.getDescricao().equals("NA"))) {
+        }
+        if (situacao_processo.getDescricao().equals("Concluído") && (emitidaNovaLicenca.getDescricao().equals("NÃO") || emitidaNovaLicenca.getDescricao().equals("NA"))) {
             return situacaoLicencaRepository.findByDescricao("Processo Concluído");
         }
-        if (controle.getDescricao().equals("Autorização")){
-            if (requerimento.getDescricao().equals("SIM") && !situacao_processo.getDescricao().equals("Concluído") && (previsao.getDescricao().equals("Prorrogar") || previsao.getDescricao().equals("Renovar"))){
-                return situacaoLicencaRepository.findByDescricao("Em renovação");
+        if (previsao.getDescricao().equals("Não Prorrogar") || previsao.getDescricao().equals("Não Renovar") || previsao.getDescricao().equals("-")){
+            if (dataAtual.isBefore(data_vencimento)) {
+                return situacaoLicencaRepository.findByDescricao("Vigente");
+            } else {
+                return situacaoLicencaRepository.findByDescricao("Inválida");
             }
         }
+
+        //rota caso a licença seja do tipo Autorização
+        if (controle.getDescricao().equals("Autorização")){
+            if (requerimento.getDescricao().equals("SIM") && !situacao_processo.getDescricao().equals("Concluído") &&
+                    (previsao.getDescricao().equals("Prorrogar") || previsao.getDescricao().equals("Renovar"))){
+               return situacaoLicencaRepository.findByDescricao("Em renovação");
+            }else if (requerimento.getDescricao().equals("SIM") || previsao.getDescricao().equals("Prorrogar") || previsao.getDescricao().equals("Renovar")) {
+                if (dataAtual.isBefore(providenciarDoc)){
+                    return situacaoLicencaRepository.findByDescricao("Vigente");
+                }else if(dataAtual.isBefore(dataLimite)){
+                    return situacaoLicencaRepository.findByDescricao("Vigente - Providenciar Documentos");
+                }else {
+                    return situacao_processo.getDescricao().equals("Concluído") ?
+                            situacaoLicencaRepository.findByDescricao("Inválida") : situacaoLicencaRepository.findByDescricao("Vencida");
+                }
+            }
+        }
+
+        //rota caso a licença seja do tipo Licenciamento
+        if (controle.getDescricao().equals("Licenciamento")){
+            if (emitidaNovaLicenca.getDescricao().equals("SIM") || situacao_processo.getDescricao().equals("Concluído")){
+                return situacaoLicencaRepository.findByDescricao("Inválida");
+            }else if(previsao.getDescricao().equals("Não Renovar") && dataAtual.isBefore(data_vencimento)){
+                return situacaoLicencaRepository.findByDescricao("Vigente");
+            }else if (requerimento.getDescricao().equals("SIM") && previsao.getDescricao().equals("Prorrogar")){
+                if (dataAtual.isBefore(providenciarDoc)){
+                    return situacaoLicencaRepository.findByDescricao("Vigente");
+                } else if (dataAtual.isBefore(dataLimite)) {
+                    return situacaoLicencaRepository.findByDescricao("Vigente - Providenciar Documentos");
+                }else {
+                    return dataAtual.isBefore(data_vencimento) ?
+                            situacaoLicencaRepository.findByDescricao("Prazo extrapolado") : situacaoLicencaRepository.findByDescricao("Vencida");
+                }
+            }
+        }
+
+        if (controle.getDescricao().equals("Condicionante") || controle.getDescricao().equals("Info_Complementar")){
+            if (dataAtual.isBefore(providenciarDoc)){
+                return situacaoLicencaRepository.findByDescricao("No prazo - Aguardando providências!");
+            }else {
+                return dataAtual.isBefore(dataLimite) ?
+                        situacaoLicencaRepository.findByDescricao("No Prazo - Preparar protocolo!") : situacaoLicencaRepository.findByDescricao("Adotar Providências");
+            }
+        }
+
+        if (controle.getDescricao().equals("Protocolo")){
+            return  situacaoLicencaRepository.findByDescricao("Retorno de Protocolo");
+        }
+
+       else return situacaoLicencaRepository.findByDescricao("ERRO");
 
 
     }
