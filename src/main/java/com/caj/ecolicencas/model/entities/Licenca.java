@@ -89,10 +89,10 @@ public class Licenca {
     @Column(name = "processo_sei", length = 100)
     private String processoSei;
 
-    @Column(name = "data_emissao")
+    @Column(name = "data_emissao",  nullable = true)
     private LocalDate dataEmissao;
 
-    @Column(name = "data_vencimento", nullable = false)
+    @Column(name = "data_vencimento", nullable = true)
     private LocalDate dataVencimento;
 
     @Column(name = "data_protocolo_orgao")
