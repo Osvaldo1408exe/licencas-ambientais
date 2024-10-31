@@ -77,7 +77,7 @@ CREATE TABLE "licencas"(
     "sgpe" VARCHAR(100),
     "processo_sei" varchar(100),
     "data_emissao" DATE,
-    "data_vencimento" DATE NOT NULL,
+    "data_vencimento" DATE,
     "id_previsao" INTEGER NOT NULL,
     "id_requerimento" INTEGER NOT NULL,
     "data_protocolo_orgao" DATE,
