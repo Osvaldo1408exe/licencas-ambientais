@@ -1,15 +1,21 @@
-CREATE TABLE "logs"(
-    "id" SERIAL,
-    "usuario" VARCHAR(50),
-    "data_entrada" TIMESTAMP
+CREATE TABLE "logs" (
+    "id_log" serial,
+    "usuario" varchar(30),
+    "data_entrada" date,
+    "tipo_log" int,
+    PRIMARY KEY ("id_log")
 );
-CREATE TABLE "todo"(
-    "id" SERIAL,
-    "texto" VARCHAR(250),
-    "checked" CHAR,
-    "usuario" VARCHAR(50),
-    "id_licenca" INTEGER
+
+CREATE TABLE "tipo_logs" (
+    "id" serial,
+    "descricao" varchar(15) NOT NULL,
+    "ativo" char(1) NOT NULL DEFAULT 's',
+    PRIMARY KEY ("id")
 );
+
+ALTER TABLE "logs"
+ADD CONSTRAINT "id_tipo_logs_foreign"
+FOREIGN KEY ("tipo_log") REFERENCES "tipo_logs" ("id");
 
 CREATE TABLE "especificacao"(
     "id_especificacao" SERIAL,
