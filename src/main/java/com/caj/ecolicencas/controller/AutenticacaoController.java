@@ -1,8 +1,10 @@
 package com.caj.ecolicencas.controller;
 
-import com.caj.ecolicencas.dto.UsuarioResponseDTO;
+import com.caj.ecolicencas.model.entities.AuthResponse;
 import com.caj.ecolicencas.model.entities.Usuario;
 import com.caj.ecolicencas.service.AuthService;
+import com.caj.ecolicencas.security.JwtService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,9 +22,13 @@ public class AutenticacaoController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioResponseDTO> login(@RequestBody Usuario usuario){
+    public ResponseEntity<?> login(@RequestBody Usuario usuario){
         usuario = authService.autenticacao(usuario);
-        UsuarioResponseDTO usuarioResponse = new UsuarioResponseDTO(usuario.getUsuario(),usuario.getAuth());
-        return ResponseEntity.ok().body(usuarioResponse);
+        if (usuario.getAuth().equals(true)){
+            String token = JwtService.generateToken(usuario.getUsuario());
+            return ResponseEntity.ok(new AuthResponse(token));
+        }else{
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }

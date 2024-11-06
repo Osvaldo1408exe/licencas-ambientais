@@ -23,11 +23,8 @@ public class AuthService {
     }
 
     public Usuario autenticacao(Usuario usuario){
-
-
         //faz autenticação do usuario via servidor LDAP
         LdapAuth.auth(usuario);
-
         //log de usuarios
         logUsuario(usuario);
 
