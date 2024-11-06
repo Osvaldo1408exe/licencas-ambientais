@@ -6,12 +6,7 @@ import com.caj.ecolicencas.model.entities.Usuario;
 import com.caj.ecolicencas.model.enuns.TipoLogs;
 import com.caj.ecolicencas.repository.LogsRepository;
 import org.springframework.stereotype.Service;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Service
 public class AuthService {
