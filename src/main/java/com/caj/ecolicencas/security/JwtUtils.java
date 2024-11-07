@@ -16,8 +16,8 @@ public class JwtUtils {
 
     public String generate(String username) {
         var now = Instant.now();
-        var tenMinutesInSeconds = 10 * 60;
-        var expiresAt = now.plus(tenMinutesInSeconds, ChronoUnit.SECONDS);
+        var twentyFourHoursInSeconds = 24 * 60 * 60;
+        var expiresAt = now.plus(twentyFourHoursInSeconds, ChronoUnit.SECONDS);
 
         return JWT.create()
                 .withIssuer("self")
