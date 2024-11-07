@@ -102,6 +102,18 @@ CREATE TABLE "licencas"(
 
 ALTER TABLE
     "licencas" ADD PRIMARY KEY("id_licenca");
+
+CREATE TABLE "historico_obs" (
+    "id_historico_obs" SERIAL unique,
+    "id_licenca" int,
+    "usuario" varchar(50) not null,
+    "observacao" varchar(550),
+    "atualizado_em" date
+)
+ALTER TABLE "historico_obs"
+ADD CONSTRAINT "id_licenca_foreing"
+FOREIGN KEY("id_licenca") REFERENCES "licencas"("id_licenca")
+
 CREATE TABLE "situacao_licenca"(
     "id_situacao_licenca" SERIAL,
     "descricao" VARCHAR(50) NOT NULL,
