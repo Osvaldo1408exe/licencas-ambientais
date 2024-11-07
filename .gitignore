@@ -31,3 +31,7 @@ build/
 !**/src/test/**/build/
 ### VS Code ###
 .vscode/
+
+###dados sensiveis###
+src/main/resources/application.properties
+.env
