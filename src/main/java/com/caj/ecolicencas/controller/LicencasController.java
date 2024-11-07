@@ -1,6 +1,8 @@
 package com.caj.ecolicencas.controller;
 
+import com.caj.ecolicencas.dto.LicencaResponseDTO;
 import com.caj.ecolicencas.model.entities.Licenca;
+import com.caj.ecolicencas.model.entities.Usuario;
 import com.caj.ecolicencas.service.LicencaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,14 +33,18 @@ public class LicencasController {
     }
 
     @PostMapping
-    public ResponseEntity<Licenca> adicionarLicenca(@RequestBody Licenca licenca){
-        Licenca licencaNova = licencaService.insertLicencas(licenca);
+    public ResponseEntity<Licenca> adicionarLicenca(@RequestBody LicencaResponseDTO licencaResponseDTO){
+        Licenca licenca = licencaResponseDTO.getLicenca();
+        Usuario usuario = licencaResponseDTO.getUsuario();
+        Licenca licencaNova = licencaService.insertLicencas(licenca, usuario);
         return ResponseEntity.ok(licencaNova);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Licenca> atualizarLicenca(@PathVariable int id, @RequestBody Licenca licencaAtualizada){
-        Licenca licencaPut = licencaService.updateLicenca(id,licencaAtualizada);
+    public ResponseEntity<Licenca> atualizarLicenca(@PathVariable int id, @RequestBody LicencaResponseDTO licencaResponseDTO){
+        Licenca licencaAtualizada = licencaResponseDTO.getLicenca();
+        Usuario usuario = licencaResponseDTO.getUsuario();
+        Licenca licencaPut = licencaService.updateLicenca(id,licencaAtualizada, usuario);
         return ResponseEntity.ok(licencaPut);
     }
 
