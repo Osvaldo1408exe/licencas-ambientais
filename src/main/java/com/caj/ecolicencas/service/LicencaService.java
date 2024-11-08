@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +19,9 @@ public class LicencaService {
     private final SituacaoProcessoRepository situacaoProcessoRepository;
     private final SimNaoRepository simNaoRepository;
     private final SituacaoLicencaRepository situacaoLicencaRepository;
+    private final HistoricoObsService historicoObsService;
 
-    public LicencaService(LicencaRepository licencaRepository, UnidadeRepository unidadeRepository, PrevisaoRepository previsaoRepository, TipoRepository tipoRepository, ControleRepository controleRepository, SituacaoProcessoRepository situacaoProcessoRepository, SimNaoRepository simNaoRepository, SituacaoLicencaRepository situacaoLicencaRepository) {
+    public LicencaService(LicencaRepository licencaRepository, UnidadeRepository unidadeRepository, PrevisaoRepository previsaoRepository, TipoRepository tipoRepository, ControleRepository controleRepository, SituacaoProcessoRepository situacaoProcessoRepository, SimNaoRepository simNaoRepository, SituacaoLicencaRepository situacaoLicencaRepository, HistoricoObsService historicoObsService) {
         this.licencaRepository = licencaRepository;
         this.unidadeRepository = unidadeRepository;
         this.previsaoRepository = previsaoRepository;
@@ -30,6 +30,7 @@ public class LicencaService {
         this.situacaoProcessoRepository = situacaoProcessoRepository;
         this.simNaoRepository = simNaoRepository;
         this.situacaoLicencaRepository = situacaoLicencaRepository;
+        this.historicoObsService = historicoObsService;
     }
     /*FUNÇÕES DE CRUD*/
 
@@ -42,15 +43,24 @@ public class LicencaService {
         return licencaRepository.findActiveByIdAndAtivo(id,"s");
     }
 
-    public Licenca insertLicencas(Licenca licenca){
+    public Licenca insertLicencas(Licenca licenca, Usuario usuario){
+
+        //adiciona a licenca
         licenca.setTempoTramitacao(tramitacao(licenca));
         licenca.setDiasParaVencer(diasParaVencer(licenca));
         licenca.setDataLimite(dataLimite(licenca));
         licencaRepository.save(licenca);
+
+        //salva as observações da licenca
+        historicoObsService.insertHistorico(licenca,usuario);
+
+
         return licenca;
     }
 
-    public Licenca updateLicenca(int id,Licenca licencaAtualizada){
+    public Licenca updateLicenca(int id,Licenca licencaAtualizada, Usuario usuario){
+
+        //atualiza a licença
         Optional<Licenca> licencaExistente = licencaRepository.findById(id);
         if (licencaExistente.isPresent()){
             Licenca licenca = licencaExistente.get();
@@ -83,6 +93,11 @@ public class LicencaService {
             licenca.setDataLimite(dataLimite(licencaAtualizada));
             licenca.setTempoTramitacao(tramitacao(licencaAtualizada));
             licenca.setDiasParaVencer(diasParaVencer(licencaAtualizada));
+            licencaAtualizada.setId(licenca.getId());
+
+            //salva as observações da licenca
+            historicoObsService.insertHistorico(licencaAtualizada,usuario);
+
 
             return licencaRepository.save(licenca);
         }else{
@@ -208,7 +223,6 @@ public class LicencaService {
                 return situacaoLicencaRepository.findByDescricao("Inválida");
             }
         }
-
         //rota caso a licença seja do tipo Autorização
         if (controle.getDescricao().equals("Autorização")){
             if (requerimento.getDescricao().equals("SIM") && !situacao_processo.getDescricao().equals("Concluído") &&
@@ -243,7 +257,6 @@ public class LicencaService {
                 }
             }
         }
-
         if (controle.getDescricao().equals("Condicionante") || controle.getDescricao().equals("Info_Complementar")){
             if (dataAtual.isBefore(providenciarDoc)){
                 return situacaoLicencaRepository.findByDescricao("No prazo - Aguardando providências!");
@@ -252,14 +265,12 @@ public class LicencaService {
                         situacaoLicencaRepository.findByDescricao("No Prazo - Preparar protocolo!") : situacaoLicencaRepository.findByDescricao("Adotar Providências");
             }
         }
-
         if (controle.getDescricao().equals("Protocolo")){
             return  situacaoLicencaRepository.findByDescricao("Retorno de Protocolo");
         }
-
        else return situacaoLicencaRepository.findByDescricao("ERRO");
-
-
     }
+
+
 
 }
