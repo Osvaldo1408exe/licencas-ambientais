@@ -11,5 +11,6 @@ API para gerenciamento de licencas ambientais
 ## Tecnologias
 - **Java**
 -  **Spring boot**
+-  **Hibernate**
 -  **Postgres**
 -  **JWT** 
