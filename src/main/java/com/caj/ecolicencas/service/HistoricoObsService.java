@@ -7,6 +7,7 @@ import com.caj.ecolicencas.repository.HistoricoObsRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 @Service
 public class HistoricoObsService {
@@ -16,8 +17,8 @@ public class HistoricoObsService {
         this.historicoObsRepository = historicoObsRepository;
     }
 
-    public Optional<HistoricoObservacoes> getHistorico(int id){
-        Optional<HistoricoObservacoes> historicoObservacoes = historicoObsRepository.findBylicenca(id);
+    public List<HistoricoObservacoes> getHistorico(int id){
+        List<HistoricoObservacoes> historicoObservacoes = historicoObsRepository.findAllWhereLicenca(id);
         return historicoObservacoes;
     }
 

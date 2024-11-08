@@ -93,6 +93,7 @@ public class LicencaService {
             licenca.setDataLimite(dataLimite(licencaAtualizada));
             licenca.setTempoTramitacao(tramitacao(licencaAtualizada));
             licenca.setDiasParaVencer(diasParaVencer(licencaAtualizada));
+            licencaAtualizada.setId(licenca.getId());
 
             //salva as observações da licenca
             historicoObsService.insertHistorico(licencaAtualizada,usuario);

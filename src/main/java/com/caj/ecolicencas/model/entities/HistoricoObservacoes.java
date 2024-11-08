@@ -23,16 +23,16 @@ public class HistoricoObservacoes {
     private String observacao;
 
     @Column(name = "atualizado_em")
-    private LocalDate atualizado_em;
+    private LocalDate atualizadoEm;
 
     public HistoricoObservacoes() {
     }
 
-    public HistoricoObservacoes(int licenca, String usuario, String observacao, LocalDate atualizado_em) {
+    public HistoricoObservacoes(int licenca, String usuario, String observacao, LocalDate atualizadoEm) {
         this.licenca = licenca;
         this.usuario = usuario;
         this.observacao = observacao;
-        this.atualizado_em = atualizado_em;
+        this.atualizadoEm = atualizadoEm;
     }
 
     public int getId_historico() {
@@ -68,10 +68,10 @@ public class HistoricoObservacoes {
     }
 
     public LocalDate getAtualizado_em() {
-        return atualizado_em;
+        return atualizadoEm;
     }
 
-    public void setAtualizado_em(LocalDate atualizado_em) {
-        this.atualizado_em = atualizado_em;
+    public void setAtualizado_em(LocalDate atualizadoEm) {
+        this.atualizadoEm = atualizadoEm;
     }
 }
