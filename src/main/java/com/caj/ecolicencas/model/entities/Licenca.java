@@ -116,11 +116,14 @@ public class Licenca {
     @Column(name = "ativo", length = 1, nullable = false)
     private String ativo;
 
+    @Column(name = "atualizado_em", nullable = true)
+    private LocalDate atualizadoEm;
+
     public Licenca() {
 
     }
 
-    public Licenca(int id, Area area, Unidade unidade, SubUnidade subUnidade, LocalDate dataRequerimento, Controle controle, OrgaoEmissor orgao, Tipo tipo, Especificacao especificacao, Previsao previsao, SimNao requerimento, SimNao emitidaNovaLicenca, SituacaoProcesso situacaoProcesso, SimNao atualizadoSa, SituacaoLicenca situacaoLicenca, SetorResponsavel setorResponsavel, String numLicenca, int fceiSinfat, String numProcessoSinfat, String sgpe, String processoSei, LocalDate dataEmissao, LocalDate dataVencimento, LocalDate dataProcotoloOrgao, String observacoes, LocalDate providenciarDoc, LocalDate dataLimite, int tempoTramitacao, int diasParaVencer, String ativo) {
+    public Licenca(int id, Area area, Unidade unidade, SubUnidade subUnidade, LocalDate dataRequerimento, Controle controle, OrgaoEmissor orgao, Tipo tipo, Especificacao especificacao, Previsao previsao, SimNao requerimento, SimNao emitidaNovaLicenca, SituacaoProcesso situacaoProcesso, SimNao atualizadoSa, SituacaoLicenca situacaoLicenca, SetorResponsavel setorResponsavel, String numLicenca, int fceiSinfat, String numProcessoSinfat, String sgpe, String processoSei, LocalDate dataEmissao, LocalDate dataVencimento, LocalDate dataProcotoloOrgao, String observacoes, LocalDate providenciarDoc, LocalDate dataLimite, int tempoTramitacao, int diasParaVencer, String ativo, LocalDate atualizadoEm) {
         this.id = id;
         this.area = area;
         this.unidade = unidade;
@@ -151,6 +154,7 @@ public class Licenca {
         this.tempoTramitacao = tempoTramitacao;
         this.diasParaVencer = diasParaVencer;
         this.ativo = ativo;
+        this.atualizadoEm = atualizadoEm;
     }
 
     public int getId() {
@@ -391,5 +395,13 @@ public class Licenca {
 
     public void setAtivo(String ativo) {
         this.ativo = ativo;
+    }
+
+    public LocalDate getAtualizadoEm() {
+        return atualizadoEm;
+    }
+
+    public void setAtualizadoEm(LocalDate atualizadoEm) {
+        this.atualizadoEm = atualizadoEm;
     }
 }

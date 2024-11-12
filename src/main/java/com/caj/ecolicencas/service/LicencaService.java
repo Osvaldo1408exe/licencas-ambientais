@@ -272,5 +272,24 @@ public class LicencaService {
     }
 
 
+    //atualiza todos os item
+    public void atualizaTodosItens() {
+        LocalDate ontem = LocalDate.now().minusDays(1);
+
+        List<Licenca> licencas = findAllActiveLicenca();
+
+        for (Licenca licenca : licencas) {
+            if (licenca.getAtualizadoEm() == null || licenca.getAtualizadoEm().isEqual(ontem)){
+                licenca.setDiasParaVencer(diasParaVencer(licenca));
+                licenca.setTempoTramitacao(tramitacao(licenca));
+                licenca.setDataLimite(dataLimite(licenca));
+                licenca.setProvidenciarDoc(providenciarDoc(licenca));
+                licenca.setSituacaoLicenca(situacaoLicenca(licenca));
+                licenca.setAtualizadoEm(LocalDate.now());
+            }
+        }
+        licencaRepository.saveAll(licencas);
+    }
+
 
 }

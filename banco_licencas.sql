@@ -97,7 +97,8 @@ CREATE TABLE "licencas"(
     "id_situacao_licenca" INTEGER NOT NULL,
     "id_setor_responsavel" INTEGER NOT NULL,
     "dias_para_vencer" INTEGER,
-    "ativo" CHAR(1) NOT NULL DEFAULT 's'
+    "ativo" CHAR(1) NOT NULL DEFAULT 's',
+    "atualizado_em" timestamp
 );
 
 ALTER TABLE
