@@ -21,6 +21,7 @@ public class LicencasController {
 
     @GetMapping
     public ResponseEntity<List<Licenca>> getLicencas(){
+        licencaService.atualizaTodosItens();//cada solicitação de get para as licenças é feito a verificação para atualiza-las
 
         List<Licenca> licencas = licencaService.findAllActiveLicenca();
         return ResponseEntity.ok(licencas);
