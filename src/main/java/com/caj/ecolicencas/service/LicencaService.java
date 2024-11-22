@@ -2,9 +2,11 @@ package com.caj.ecolicencas.service;
 
 import com.caj.ecolicencas.model.entities.*;
 import com.caj.ecolicencas.repository.*;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +51,7 @@ public class LicencaService {
         licenca.setTempoTramitacao(tramitacao(licenca));
         licenca.setDiasParaVencer(diasParaVencer(licenca));
         licenca.setDataLimite(dataLimite(licenca));
+        licenca.setSituacaoLicenca(situacaoLicenca(licenca));
         licencaRepository.save(licenca);
 
         //salva as observações da licenca
@@ -279,7 +282,7 @@ public class LicencaService {
         List<Licenca> licencas = findAllActiveLicenca();
 
         for (Licenca licenca : licencas) {
-            if (licenca.getAtualizadoEm() == null || licenca.getAtualizadoEm().isEqual(ontem)){
+            if (licenca.getAtualizadoEm() == null || !licenca.getAtualizadoEm().isEqual(ontem)){
                 licenca.setDiasParaVencer(diasParaVencer(licenca));
                 licenca.setTempoTramitacao(tramitacao(licenca));
                 licenca.setDataLimite(dataLimite(licenca));
